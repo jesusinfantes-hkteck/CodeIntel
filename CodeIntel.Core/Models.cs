@@ -27,3 +27,12 @@ public record VectorDocument(
     string Type,
     string ClassName,
     string FilePath);
+
+public record VersionInfo(
+    string VersionId, 
+    string CommitHash, 
+    DateTimeOffset Timestamp, 
+    bool IsCurrent)
+{
+    public string? DatabaseName { get; init; }
+}

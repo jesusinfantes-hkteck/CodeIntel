@@ -8,6 +8,7 @@ using CodeIntel.Vector;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
@@ -15,6 +16,11 @@ var host = new HostBuilder()
     {
         c.AddJsonFile("appsettings.json", optional: true);
         c.AddEnvironmentVariables();
+    })
+    .ConfigureLogging(logging =>
+    {
+        logging.AddConsole();
+        logging.SetMinimumLevel(LogLevel.Information);
     })
     .ConfigureServices((ctx, services) =>
     {
@@ -27,12 +33,74 @@ var host = new HostBuilder()
         // Roslyn analyzer (REAL)
         services.AddSingleton<ICodeAnalyzer, RoslynAnalyzer>();
 
-        // Check if we're running locally without Azure services
-        bool useRealAzure = !string.IsNullOrEmpty(cfg["CosmosGremlin:Host"]);
+        // Check if we're using Neo4j, Cosmos Gremlin, or Mock
+        // DEFAULT: Neo4jVersioned (Estrategia 1 - Versionado Temporal)
+        var graphStoreType = cfg["GraphStore:Type"] ?? "Neo4jVersioned"; // "Neo4jVersioned" (recommended), "Neo4jMultiDB", "Neo4j" (no versioning), "Gremlin", or "Mock"
 
-        if (useRealAzure)
+        if (graphStoreType == "Neo4jVersioned")
         {
-            // Real Azure services
+            // Neo4j with versioning support (RECOMMENDED for production)
+            var neo4jUri = cfg["Neo4j:Uri"] ?? "bolt://localhost:7687";
+            var neo4jUser = cfg["Neo4j:User"] ?? "neo4j";
+            var neo4jPassword = cfg["Neo4j:Password"]!;
+
+            services.AddSingleton<IVersionedGraphStore>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<Neo4jVersionedGraphStore>>();
+                return new Neo4jVersionedGraphStore(neo4jUri, neo4jUser, neo4jPassword, logger);
+            });
+
+            services.AddSingleton<IGraphStore>(sp => sp.GetRequiredService<IVersionedGraphStore>());
+
+            // ✅ NUEVO: Usar Neo4j para Vector Index también (no Azure Search)
+            services.AddSingleton<IVectorIndex>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<Neo4jVectorIndex>>();
+                return new Neo4jVectorIndex(neo4jUri, neo4jUser, neo4jPassword, logger, 1536);
+            });
+        }
+        else if (graphStoreType == "Neo4jMultiDB")
+        {
+            // Neo4j with multi-database strategy (alternative versioning approach)
+            var neo4jUri = cfg["Neo4j:Uri"] ?? "bolt://localhost:7687";
+            var neo4jUser = cfg["Neo4j:User"] ?? "neo4j";
+            var neo4jPassword = cfg["Neo4j:Password"]!;
+
+            services.AddSingleton<IVersionedGraphStore>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<Neo4jMultiDatabaseGraphStore>>();
+                return new Neo4jMultiDatabaseGraphStore(neo4jUri, neo4jUser, neo4jPassword, logger);
+            });
+
+            services.AddSingleton<IGraphStore>(sp => sp.GetRequiredService<IVersionedGraphStore>());
+
+            services.AddSingleton<IVectorIndex>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<Neo4jVectorIndex>>();
+                return new Neo4jVectorIndex(neo4jUri, neo4jUser, neo4jPassword, logger, 1536);
+            });
+        }
+        else if (graphStoreType == "Neo4j")
+        {
+            // Neo4j for both Graph and Vector storage
+            var neo4jUri = cfg["Neo4j:Uri"] ?? "bolt://localhost:7687";
+            var neo4jUser = cfg["Neo4j:User"] ?? "neo4j";
+            var neo4jPassword = cfg["Neo4j:Password"]!;
+
+            services.AddSingleton<IGraphStore>(sp => 
+            {
+                var logger = sp.GetRequiredService<ILogger<Neo4jGraphStore>>();
+                return new Neo4jGraphStore(neo4jUri, neo4jUser, neo4jPassword, logger);
+            });
+
+            services.AddSingleton<IVectorIndex>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<Neo4jVectorIndex>>();
+                return new Neo4jVectorIndex(neo4jUri, neo4jUser, neo4jPassword, logger, 1536);
+            });
+        }
+        else if (graphStoreType == "Gremlin")
+        {
             services.AddSingleton<IGraphStore>(_ => new CosmosGremlinGraphStore(
                 host: cfg["CosmosGremlin:Host"]!,
                 port: int.Parse(cfg["CosmosGremlin:Port"] ?? "443"),
@@ -41,6 +109,21 @@ var host = new HostBuilder()
                 key: cfg["CosmosGremlin:Key"]!
             ));
 
+            // ⚠️ NOTE: Gremlin uses separate graph store but vector search requires Neo4j or Mock
+            // If you need vectors with Gremlin, consider running Neo4j in parallel for vector-only
+            services.AddSingleton<IVectorIndex, MockVectorIndex>();
+        }
+        else // Mock
+        {
+            services.AddSingleton<IGraphStore, MockGraphStore>();
+            services.AddSingleton<IVectorIndex, MockVectorIndex>();
+        }
+
+        // Embedding Service (Azure OpenAI o Mock)
+        bool useRealAzureOpenAI = !string.IsNullOrEmpty(cfg["AzureOpenAI:Endpoint"]);
+
+        if (useRealAzureOpenAI)
+        {
             services.AddHttpClient();
             services.AddSingleton<IEmbeddingService>(sp =>
             {
@@ -53,22 +136,14 @@ var host = new HostBuilder()
                     cfg["AzureOpenAI:ApiVersion"] ?? "2024-06-01"
                 );
             });
-
-            services.AddSingleton<IVectorIndex>(_ => new AzureSearchVectorIndex(
-                endpoint: cfg["Search:Endpoint"]!,
-                apiKey: cfg["Search:ApiKey"]!,
-                indexName: cfg["Search:IndexName"] ?? "codeintel",
-                vectorDimensions: int.Parse(cfg["Search:VectorDimensions"] ?? "1536")
-            ));
         }
         else
         {
-            // Mock Azure services (for local development)
-            Console.WriteLine("⚠️  Running with MOCK Azure services (local development mode)");
-            services.AddSingleton<IGraphStore, MockGraphStore>();
             services.AddSingleton<IEmbeddingService, MockEmbeddingService>();
-            services.AddSingleton<IVectorIndex, MockVectorIndex>();
         }
+
+        // ✅ NOTA: Vector Index ya está configurado arriba en cada GraphStore
+        // No necesitamos Azure Search porque Neo4j maneja vectores nativamente
 
         // Orchestrator
         services.AddSingleton<IngestOrchestrator>();
