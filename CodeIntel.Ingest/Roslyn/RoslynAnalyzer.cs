@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using CodeIntel.Core;
+using CodeIntel.Ingest.Aspx;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -9,22 +10,33 @@ using Microsoft.CodeAnalysis.MSBuild;
 namespace CodeIntel.Ingest.Roslyn;
 
 /// <summary>
-/// MVP: analiza archivos .cs sueltos.
-/// Si quieres análisis cross-solution completo, abre .sln/.csproj con MSBuildWorkspace.
+/// Analyzes C# files and ASPX/ASCX files from repositories
 /// </summary>
 public sealed class RoslynAnalyzer : ICodeAnalyzer
 {
+    private readonly AspxAnalyzer _aspxAnalyzer = new();
+
     public async Task<GraphModel> AnalyzeAsync(string localPath, CancellationToken ct)
     {
         var csFiles = Directory.EnumerateFiles(localPath, "*.cs", SearchOption.AllDirectories)
             .Where(f => !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar)
-                     && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar))
+                     && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar)
+                     && !f.EndsWith(".designer.cs", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        var aspxFiles = Directory.EnumerateFiles(localPath, "*.aspx", SearchOption.AllDirectories)
+            .Concat(Directory.EnumerateFiles(localPath, "*.ascx", SearchOption.AllDirectories))
             .ToList();
 
         var classes = new ConcurrentBag<CodeClass>();
         var methods = new ConcurrentBag<CodeMethod>();
         var edges = new ConcurrentBag<CodeEdge>();
 
+        var aspxPages = new ConcurrentBag<AspxPage>();
+        var aspxControls = new ConcurrentBag<AspxControl>();
+        var aspxEvents = new ConcurrentBag<AspxEvent>();
+
+        // Analyze C# files
         foreach (var file in csFiles)
         {
             ct.ThrowIfCancellationRequested();
@@ -78,7 +90,39 @@ public sealed class RoslynAnalyzer : ICodeAnalyzer
             }
         }
 
-        return new GraphModel(classes.ToList(), methods.ToList(), edges.ToList());
+        // Analyze ASPX/ASCX files
+        foreach (var aspxFile in aspxFiles)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            try
+            {
+                var result = await _aspxAnalyzer.AnalyzeAsync(aspxFile, localPath, ct);
+
+                aspxPages.Add(result.Page);
+
+                foreach (var control in result.Controls)
+                    aspxControls.Add(control);
+
+                foreach (var evt in result.Events)
+                    aspxEvents.Add(evt);
+
+                foreach (var edge in result.Edges)
+                    edges.Add(edge);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Failed to analyze {aspxFile}: {ex.Message}");
+            }
+        }
+
+        return new GraphModel(
+            classes.ToList(), 
+            methods.ToList(), 
+            edges.ToList(),
+            aspxPages.ToList(),
+            aspxControls.ToList(),
+            aspxEvents.ToList());
     }
 
     private static string Rel(string file, string root)

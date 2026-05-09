@@ -211,6 +211,8 @@ public class GitHubWebhookFunction
                 {
                     classes = graphModel.Classes.Count,
                     methods = graphModel.Methods.Count,
+                    aspxPages = graphModel.AspxPages.Count,
+                    aspxControls = graphModel.AspxControls.Count,
                     edges = graphModel.Edges.Count,
                     topClasses = graphModel.Classes.Take(10).Select(c => new { c.Name, c.Namespace })
                 }

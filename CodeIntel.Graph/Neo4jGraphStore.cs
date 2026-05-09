@@ -24,8 +24,8 @@ public class Neo4jGraphStore : IGraphStore, IAsyncDisposable
     {
         var repoId = $"{req.Owner}/{req.Repo}@{req.Branch}";
 
-        _logger.LogInformation("Storing graph for {RepoId}: {ClassCount} classes, {MethodCount} methods, {EdgeCount} edges",
-            repoId, model.Classes.Count, model.Methods.Count, model.Edges.Count);
+        _logger.LogInformation("Storing graph for {RepoId}: {ClassCount} classes, {MethodCount} methods, {AspxPageCount} ASPX pages, {AspxControlCount} controls, {EdgeCount} edges",
+            repoId, model.Classes.Count, model.Methods.Count, model.AspxPages.Count, model.AspxControls.Count, model.Edges.Count);
 
         await using var session = _driver.AsyncSession();
 
@@ -99,7 +99,89 @@ public class Neo4jGraphStore : IGraphStore, IAsyncDisposable
                     });
                 }
 
-                // 4. Create relationships (edges)
+                // 4. Create ASPX Page nodes
+                foreach (var page in model.AspxPages)
+                {
+                    await tx.RunAsync(@"
+                        MERGE (p:AspxPage {id: $id})
+                        SET p.name = $name,
+                            p.filePath = $filePath,
+                            p.codeBehindClass = $codeBehindClass,
+                            p.inherits = $inherits,
+                            p.repoId = $repoId,
+                            p.lastUpdated = datetime()
+                        WITH p
+                        MATCH (r:Repository {id: $repoId})
+                        MERGE (r)-[:CONTAINS]->(p)
+                    ",
+                    new
+                    {
+                        id = page.Id,
+                        name = page.Name,
+                        filePath = page.FilePath,
+                        codeBehindClass = page.CodeBehindClass,
+                        inherits = page.Inherits,
+                        repoId
+                    });
+                }
+
+                // 5. Create ASPX Control nodes
+                foreach (var control in model.AspxControls)
+                {
+                    var eventsJson = control.Events != null 
+                        ? System.Text.Json.JsonSerializer.Serialize(control.Events) 
+                        : null;
+
+                    await tx.RunAsync(@"
+                        MERGE (c:AspxControl {id: $id})
+                        SET c.name = $name,
+                            c.type = $type,
+                            c.pageId = $pageId,
+                            c.filePath = $filePath,
+                            c.events = $events,
+                            c.repoId = $repoId,
+                            c.lastUpdated = datetime()
+                        WITH c
+                        MATCH (p:AspxPage {id: $pageId})
+                        MERGE (p)-[:HAS_CONTROL]->(c)
+                    ",
+                    new
+                    {
+                        id = control.Id,
+                        name = control.Name,
+                        type = control.Type,
+                        pageId = control.PageId,
+                        filePath = control.FilePath,
+                        events = eventsJson,
+                        repoId
+                    });
+                }
+
+                // 6. Create ASPX Event nodes
+                foreach (var evt in model.AspxEvents)
+                {
+                    await tx.RunAsync(@"
+                        MERGE (e:AspxEvent {id: $id})
+                        SET e.eventName = $eventName,
+                            e.controlId = $controlId,
+                            e.handlerMethod = $handlerMethod,
+                            e.repoId = $repoId,
+                            e.lastUpdated = datetime()
+                        WITH e
+                        MATCH (c:AspxControl {id: $controlId})
+                        MERGE (c)-[:TRIGGERS]->(e)
+                    ",
+                    new
+                    {
+                        id = evt.Id,
+                        eventName = evt.EventName,
+                        controlId = evt.ControlId,
+                        handlerMethod = evt.HandlerMethod,
+                        repoId
+                    });
+                }
+
+                // 7. Create relationships (edges)
                 foreach (var edge in model.Edges)
                 {
                     var relType = edge.Type.ToString().ToUpper();

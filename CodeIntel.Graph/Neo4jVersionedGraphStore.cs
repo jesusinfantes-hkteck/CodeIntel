@@ -292,7 +292,10 @@ public class Neo4jVersionedGraphStore : IVersionedGraphStore, IAsyncDisposable
             }
         });
 
-        return new GraphModel(classes, methods, edges);
+        return new GraphModel(classes, methods, edges, 
+            new List<AspxPage>(), 
+            new List<AspxControl>(), 
+            new List<AspxEvent>());
     }
 
     /// <summary>

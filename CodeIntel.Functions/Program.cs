@@ -172,18 +172,27 @@ public sealed class IngestOrchestrator
     public async Task<object> RunAsync(RepoRequest req, CancellationToken ct)
     {
         var local = await _source.DownloadRepositoryAsync(req, ct);
+        Console.WriteLine($"📁 Downloaded to: {local}");
+
         var graphModel = await _analyzer.AnalyzeAsync(local, ct);
+        Console.WriteLine($"📊 Analyzed: {graphModel.Classes.Count} classes, {graphModel.Methods.Count} methods, {graphModel.AspxPages.Count} ASPX pages, {graphModel.AspxControls.Count} controls, {graphModel.Edges.Count} edges");
+
         await _graph.UpsertAsync(req, graphModel, ct);
 
         await _index.EnsureIndexAsync(ct);
 
         var toIndex = new List<VectorDocument>();
-        foreach (var (id, content, type, className, filePath) in CodeChunker.ToVectorDocs(graphModel))
+        var chunks = CodeChunker.ToVectorDocs(graphModel).ToList();
+        Console.WriteLine($"📦 Generated {chunks.Count} code chunks for embedding");
+
+        foreach (var (id, content, type, className, filePath) in chunks)
         {
             ct.ThrowIfCancellationRequested();
             var emb = await _embed.EmbedAsync(content, ct);
             toIndex.Add(new VectorDocument(id, content, emb, type, className, filePath));
         }
+
+        Console.WriteLine($"🔢 Generated {toIndex.Count} embeddings");
 
         await _index.UpsertAsync(toIndex, ct);
 
@@ -193,7 +202,11 @@ public sealed class IngestOrchestrator
             downloadedTo = local,
             classes = graphModel.Classes.Count,
             methods = graphModel.Methods.Count,
+            aspxPages = graphModel.AspxPages.Count,
+            aspxControls = graphModel.AspxControls.Count,
+            aspxEvents = graphModel.AspxEvents.Count,
             edges = graphModel.Edges.Count,
+            chunksGenerated = chunks.Count,
             indexed = toIndex.Count
         };
     }
