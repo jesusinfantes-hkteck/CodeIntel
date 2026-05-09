@@ -1,4 +1,4 @@
-# 🚀 Guía de Inicio Rápido - CodeIntel Estrategia 1
+# 🚀 Guía de Inicio Rápido - CodeIntel
 
 Esta guía te llevará de 0 a tener CodeIntel funcionando con versionado temporal en **menos de 15 minutos**.
 
@@ -64,7 +64,7 @@ Host initialized (XXXms)
 .\scripts\Test-Strategy1.ps1
 ```
 
-✅ **¡Listo!** CodeIntel está funcionando con Estrategia 1.
+✅ **¡Listo!** CodeIntel está funcionando con versionado temporal Neo4j.
 
 ---
 

@@ -15,11 +15,11 @@ Todas las modificaciones necesarias para leer y analizar archivos ASPX de reposi
 - ✅ Mapeo de eventos UI → métodos code-behind
 - ✅ Relaciones entre páginas, controles y clases
 - ✅ Generación de embeddings para búsqueda semántica de UI
-- ✅ Soporte completo en Neo4j y Cosmos Gremlin
+- ✅ Soporte completo en Neo4j con versionado temporal
 
 ---
 
-## 📁 Archivos Modificados (11 archivos)
+## 📁 Archivos Modificados (8 archivos)
 
 ### Modelo de Dominio
 1. **CodeIntel.Core\Models.cs** ✏️
@@ -43,29 +43,21 @@ Todas las modificaciones necesarias para leer y analizar archivos ASPX de reposi
    - Metadata contextual para mejor búsqueda
 
 ### Almacenamiento
-5. **CodeIntel.Graph\Neo4jGraphStore.cs** ✏️
+5. **CodeIntel.Graph\Neo4jVersionedGraphStore.cs** ✏️
    - Nodos: `AspxPage`, `AspxControl`, `AspxEvent`
    - Relaciones: `HAS_CONTROL`, `TRIGGERS`, `CODE_BEHIND`, etc.
-
-6. **CodeIntel.Graph\CosmosGremlinGraphStore.cs** ✏️
-   - Vértices y edges equivalentes para Gremlin
-
-7. **CodeIntel.Graph\Neo4jVersionedGraphStore.cs** ✏️
-   - Compatibilidad con nuevo modelo GraphModel
-
-8. **CodeIntel.Graph\Neo4jMultiDatabaseGraphStore.cs** ✏️
-   - Compatibilidad mantenida
+   - Soporte completo de versionado temporal para ASPX
 
 ### Orquestación
-9. **CodeIntel.Functions\Program.cs** ✏️
+6. **CodeIntel.Functions\Program.cs** ✏️
    - Logging actualizado con métricas ASPX
    - Respuesta JSON con contadores ASPX
 
-10. **CodeIntel.Functions\GitHubWebhookFunction.cs** ✏️
+7. **CodeIntel.Functions\GitHubWebhookFunction.cs** ✏️
     - Snapshot endpoint incluye datos ASPX
 
 ### Dependencias
-11. **CodeIntel.Ingest\CodeIntel.Ingest.csproj** ✏️
+8. **CodeIntel.Ingest\CodeIntel.Ingest.csproj** ✏️
     - Agregado: `HtmlAgilityPack` v1.11.54
 
 ---

@@ -1,6 +1,6 @@
 # 📚 Índice de Documentación - CodeIntel
 
-Guía completa de navegación por toda la documentación del proyecto CodeIntel con Estrategia 1 (Versionado Temporal).
+Guía completa de navegación por toda la documentación del proyecto CodeIntel con versionado temporal usando Neo4j.
 
 ---
 
@@ -37,7 +37,7 @@ Guía completa de navegación por toda la documentación del proyecto CodeIntel 
 
 | Documento | Contenido | Cuándo usarlo |
 |-----------|-----------|---------------|
-| **[docs/Versionado_y_Rollback_Neo4j.md](docs/Versionado_y_Rollback_Neo4j.md)** | Análisis técnico de estrategias | Decisiones arquitecturales |
+| **[docs/Versionado_y_Rollback_Neo4j.md](docs/Versionado_y_Rollback_Neo4j.md)** | Arquitectura de versionado temporal | Decisiones arquitecturales |
 | **[README.md](README.md)** - Sección Arquitectura | Componentes y flujos | Entender el sistema |
 | **[docs/CHECKLIST_IMPLEMENTACION.md](docs/CHECKLIST_IMPLEMENTACION.md)** | Estado de implementación | Revisar completitud |
 

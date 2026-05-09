@@ -55,7 +55,7 @@ Este documento detalla las modificaciones implementadas para permitir el anális
 - ➕ Genera chunks para eventos ASPX
 - Los chunks incluyen información contextual (code-behind, tipo de control, eventos)
 
-### 6. **CodeIntel.Graph\Neo4jGraphStore.cs**
+### 5. **CodeIntel.Graph\Neo4jVersionedGraphStore.cs**
 **Cambios:**
 - Crea nodos `AspxPage` en Neo4j con propiedades:
   - id, name, filePath, codeBehindClass, inherits
@@ -69,31 +69,16 @@ Este documento detalla las modificaciones implementadas para permitir el anális
   - `(AspxControl)-[:TRIGGERS]->(AspxEvent)`
   - `(AspxPage)-[:CODE_BEHIND]->(CodeClass)`
   - `(AspxEvent)-[:HANDLES_EVENT]->(CodeMethod)`
+- Soporte completo de versionado temporal para elementos ASPX
 - Actualizado logging con contadores ASPX
 
-### 7. **CodeIntel.Graph\CosmosGremlinGraphStore.cs**
-**Cambios:**
-- Crea vértices `AspxPage`, `AspxControl`, `AspxEvent` en Gremlin/Cosmos DB
-- Implementa edges equivalentes a Neo4j:
-  - `belongs_to`: Control → Page
-  - `triggered_by`: Event → Control
-  - `codebehind`, `hascontrol`, `handlesevent`
-
-### 8. **CodeIntel.Graph\Neo4jVersionedGraphStore.cs**
-**Cambios:**
-- Actualizado `GetGraphAtTimestampAsync` para devolver listas vacías de elementos ASPX
-- (Soporte completo de versionado ASPX puede agregarse en iteraciones futuras)
-
-### 9. **CodeIntel.Graph\Neo4jMultiDatabaseGraphStore.cs**
-**Sin cambios funcionales** - Mantiene comportamiento de NotImplementedException para temporal queries
-
-### 10. **CodeIntel.Functions\Program.cs**
+### 6. **CodeIntel.Functions\Program.cs**
 **Cambios:**
 - Actualizado logging para incluir contadores ASPX
 - Respuesta JSON ahora incluye:
   - `aspxPages`, `aspxControls`, `aspxEvents`
 
-### 11. **CodeIntel.Functions\GitHubWebhookFunction.cs**
+### 7. **CodeIntel.Functions\GitHubWebhookFunction.cs**
 **Cambios:**
 - Endpoint de snapshot ahora incluye contadores ASPX en la respuesta
 

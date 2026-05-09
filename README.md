@@ -172,23 +172,22 @@ curl "http://localhost:7071/api/repo/tu-usuario/tu-repositorio/main/snapshot?tim
 
 ## 🔧 Configuración Avanzada
 
-### Estrategias de Versionado
+### Configuración de Storage
 
-El sistema soporta 3 estrategias (configurar en `appsettings.json`):
+El sistema utiliza Neo4j para almacenamiento de grafo y vectores (configurar en `appsettings.json`):
 
 ```json
 {
   "GraphStore": {
-    "Type": "Neo4jVersioned"  // ← RECOMENDADO (Estrategia 1)
+    "Type": "Neo4jVersioned"  // ← Recomendado para producción
   }
 }
 ```
 
-| Estrategia | Valor Config | Descripción |
-|------------|-------------|-------------|
-| **Temporal (Estrategia 1)** ✅ | `Neo4jVersioned` | Versionado bitemporal, historial completo, queries temporales |
-| **Multi-DB (Estrategia 2)** | `Neo4jMultiDB` | Cada versión en BD separada, rollback instantáneo |
-| **Sin versionado (Legacy)** | `Neo4j` | Sin historial, sobrescribe datos |
+| Opción | Valor Config | Descripción |
+|--------|-------------|-------------|
+| **Neo4j Versionado** ✅ | `Neo4jVersioned` | Versionado bitemporal, historial completo, queries temporales, rollback |
+| **Mock (Testing)** | `Mock` | Store en memoria para desarrollo y pruebas unitarias |
 
 ### Políticas de Retención
 
