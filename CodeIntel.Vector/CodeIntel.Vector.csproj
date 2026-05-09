@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Search.Documents" Version="11.7.0" />
+    <!-- Azure Search removed - using Neo4j Vector Search instead -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeIntel.Core\CodeIntel.Core.csproj" />

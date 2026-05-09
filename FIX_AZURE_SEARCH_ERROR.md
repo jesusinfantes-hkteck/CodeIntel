@@ -1,23 +1,42 @@
-# 🔧 FIX: Error "Invalid URI: The hostname could not be parsed"
+# 🗑️ DEPRECATED: Azure Search Error Fix
 
-## ❌ Error Original
+## ⚠️ Este documento ya no es relevante
 
-```
-[2026-05-07T14:27:29.880Z] System.UriFormatException: Invalid URI: The hostname could not be parsed.
-[2026-05-07T14:27:29.881Z]    at System.Uri..ctor(String uriString)
-[2026-05-07T14:27:29.883Z]    at CodeIntel.Vector.AzureSearchVectorIndex..ctor(String endpoint, ...)
-[2026-05-07T14:27:29.885Z]    at Program.cs:line 151
-```
+**Razón:** El proyecto ha migrado completamente a **Neo4j Vector Search**. 
+
+`AzureSearchVectorIndex.cs` y todas las dependencias de Azure AI Search han sido eliminadas del proyecto.
 
 ---
 
-## 🔍 Causa del Problema
+## 📜 Información Histórica
 
-El código en `Program.cs` intentaba crear `AzureSearchVectorIndex` **siempre** que `AzureOpenAI:Endpoint` estuviera configurado, **pero** el `Search:Endpoint` estaba vacío en `appsettings.json`.
+Este documento describía un error que ocurría cuando se intentaba usar Azure AI Search para vectores.
 
-### Código Problemático (ANTES):
+**Estado Actual del Proyecto:**
+- ✅ **Graph Store:** Neo4j (con versionado)
+- ✅ **Vector Search:** Neo4j Vector Index (integrado)
+- ❌ **Azure AI Search:** REMOVIDO
+- ❌ **Cosmos Gremlin:** REMOVIDO
 
-```csharp
+**Archivos Eliminados:**
+- `CodeIntel.Vector\AzureSearchVectorIndex.cs`
+- `CodeIntel.Graph\CosmosGremlinGraphStore.cs`
+
+**Dependencias Removidas:**
+- `Azure.Search.Documents` 
+- `Gremlin.Net`
+
+---
+
+## 🔗 Documentación Relevante
+
+Para información actual sobre la implementación de vectores, consulta:
+- `docs/README-Neo4j-Vector-Graph.md`
+- `README_ASPX.md`
+
+---
+
+*Este archivo se mantiene solo con fines históricos.*
 // Línea ~134
 bool useRealAzure = !string.IsNullOrEmpty(cfg["AzureOpenAI:Endpoint"]);
 

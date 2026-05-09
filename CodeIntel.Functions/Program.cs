@@ -33,9 +33,9 @@ var host = new HostBuilder()
         // Roslyn analyzer (REAL)
         services.AddSingleton<ICodeAnalyzer, RoslynAnalyzer>();
 
-        // Check if we're using Neo4j, Cosmos Gremlin, or Mock
+        // Check if we're using Neo4j or Mock
         // DEFAULT: Neo4jVersioned (Estrategia 1 - Versionado Temporal)
-        var graphStoreType = cfg["GraphStore:Type"] ?? "Neo4jVersioned"; // "Neo4jVersioned" (recommended), "Neo4jMultiDB", "Neo4j" (no versioning), "Gremlin", or "Mock"
+        var graphStoreType = cfg["GraphStore:Type"] ?? "Neo4jVersioned"; // "Neo4jVersioned" (recommended), "Neo4jMultiDB", "Neo4j" (no versioning), or "Mock"
 
         if (graphStoreType == "Neo4jVersioned")
         {
@@ -98,20 +98,6 @@ var host = new HostBuilder()
                 var logger = sp.GetRequiredService<ILogger<Neo4jVectorIndex>>();
                 return new Neo4jVectorIndex(neo4jUri, neo4jUser, neo4jPassword, logger, 1536);
             });
-        }
-        else if (graphStoreType == "Gremlin")
-        {
-            services.AddSingleton<IGraphStore>(_ => new CosmosGremlinGraphStore(
-                host: cfg["CosmosGremlin:Host"]!,
-                port: int.Parse(cfg["CosmosGremlin:Port"] ?? "443"),
-                database: cfg["CosmosGremlin:Database"]!,
-                graph: cfg["CosmosGremlin:Graph"]!,
-                key: cfg["CosmosGremlin:Key"]!
-            ));
-
-            // ⚠️ NOTE: Gremlin uses separate graph store but vector search requires Neo4j or Mock
-            // If you need vectors with Gremlin, consider running Neo4j in parallel for vector-only
-            services.AddSingleton<IVectorIndex, MockVectorIndex>();
         }
         else // Mock
         {
