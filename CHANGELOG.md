@@ -1,4 +1,4 @@
-# Changelog - CodeIntel
+﻿# Changelog - AriadnaKnowledgeStore
 
 Todos los cambios notables a este proyecto serán documentados en este archivo.
 
@@ -11,7 +11,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ### 🎉 Lanzamiento Inicial - Estrategia 1 (Versionado Temporal)
 
-Esta es la primera versión estable de CodeIntel con soporte completo de versionado temporal y rollback.
+Esta es la primera versión estable de AriadnaKnowledgeStore con soporte completo de versionado temporal y rollback.
 
 ### ✨ Agregado
 
@@ -55,26 +55,26 @@ Esta es la primera versión estable de CodeIntel con soporte completo de version
 - Default strategy cambiado de `Mock` a `Neo4jVersioned` para producción
 
 #### Modelos
-- `CodeIntel.Core/Abstractions.cs` - Nueva interfaz `IVersionedGraphStore`
-- `CodeIntel.Core/Models.cs` - Agregado modelo `VersionInfo`
+- `AriadnaKnowledgeStore.Core/Abstractions.cs` - Nueva interfaz `IVersionedGraphStore`
+- `AriadnaKnowledgeStore.Core/Models.cs` - Agregado modelo `VersionInfo`
 
 ### 🏗️ Arquitectura
 
 ```
-CodeIntel/
-├── CodeIntel.Core/           # Modelos e interfaces
+AriadnaKnowledgeStore/
+├── AriadnaKnowledgeStore.Core/           # Modelos e interfaces
 │   ├── Abstractions.cs       # ✨ IVersionedGraphStore agregada
 │   └── Models.cs             # ✨ VersionInfo agregada
-├── CodeIntel.Graph/          # Implementaciones de stores
+├── AriadnaKnowledgeStore.Graph/          # Implementaciones de stores
 │   ├── Neo4jVersionedGraphStore.cs       # ✨ NUEVO - Estrategia 1
 │   ├── Neo4jMultiDatabaseGraphStore.cs   # ✨ NUEVO - Estrategia 2
 │   └── Neo4jGraphStore.cs                # Legacy
-├── CodeIntel.Functions/      # Azure Functions
+├── AriadnaKnowledgeStore.Functions/      # Azure Functions
 │   ├── GitHubWebhookFunction.cs          # ✨ NUEVO - APIs de versionado
 │   ├── Program.cs                        # 🔄 Actualizado
 │   └── appsettings.json                  # 🔄 Actualizado
 ├── scripts/                  # Automatización
-│   ├── Setup-CodeIntel.ps1               # ✨ NUEVO - Setup completo
+│   ├── Setup-AriadnaKnowledgeStore.ps1               # ✨ NUEVO - Setup completo
 │   ├── Initialize-Neo4j-Versioned.ps1    # ✨ NUEVO - Init Neo4j
 │   └── Test-Strategy1.ps1                # ✨ NUEVO - Tests automatizados
 └── docs/                     # Documentación
@@ -140,14 +140,14 @@ Ver `appsettings.versioned.json` para todas las opciones disponibles.
 
 #### Local
 ```powershell
-.\scripts\Setup-CodeIntel.ps1
-cd CodeIntel.Functions
+.\scripts\Setup-AriadnaKnowledgeStore.ps1
+cd AriadnaKnowledgeStore.Functions
 func start
 ```
 
 #### Azure
 ```powershell
-func azure functionapp publish func-codeintel
+func azure functionapp publish func-AriadnaKnowledgeStore
 ```
 
 ### 📖 Casos de Uso Implementados
@@ -301,7 +301,7 @@ IGraphStore store = new Neo4jVersionedGraphStore(...); // ✅ Funciona (IVersion
 
 ## Contribuidores
 
-- Equipo CodeIntel
+- Equipo AriadnaKnowledgeStore
 
 ## Licencia
 

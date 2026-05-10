@@ -1,8 +1,8 @@
-# ✅ Checklist de Implementación - Versionado Temporal Neo4j
+﻿# ✅ Checklist de Implementación - Versionado Temporal Neo4j
 
 ## Resumen Ejecutivo
 
-Se ha implementado completamente el **Versionado Temporal (Bitemporal)** en CodeIntel, incluyendo:
+Se ha implementado completamente el **Versionado Temporal (Bitemporal)** en AriadnaKnowledgeStore, incluyendo:
 
 - ✅ Almacenamiento versionado en Neo4j
 - ✅ Capacidad de rollback a versiones anteriores
@@ -20,19 +20,19 @@ Se ha implementado completamente el **Versionado Temporal (Bitemporal)** en Code
 
 | Archivo | Estado | Descripción |
 |---------|--------|-------------|
-| `CodeIntel.Core/Abstractions.cs` | ✅ Modificado | Agregada interfaz `IVersionedGraphStore` |
-| `CodeIntel.Core/Models.cs` | ✅ Modificado | Agregado modelo `VersionInfo` |
-| `CodeIntel.Graph/Neo4jVersionedGraphStore.cs` | ✅ Creado | Única implementación de producción con versionado bitemporal |
-| `CodeIntel.Functions/GitHubWebhookFunction.cs` | ✅ Creado | Endpoints para webhooks y gestión de versiones |
-| `CodeIntel.Functions/Program.cs` | ✅ Modificado | Configuración DI para stores versionados |
-| `CodeIntel.Functions/appsettings.json` | ✅ Modificado | Config por defecto `Neo4jVersioned` |
+| `AriadnaKnowledgeStore.Core/Abstractions.cs` | ✅ Modificado | Agregada interfaz `IVersionedGraphStore` |
+| `AriadnaKnowledgeStore.Core/Models.cs` | ✅ Modificado | Agregado modelo `VersionInfo` |
+| `AriadnaKnowledgeStore.Graph/Neo4jVersionedGraphStore.cs` | ✅ Creado | Única implementación de producción con versionado bitemporal |
+| `AriadnaKnowledgeStore.Functions/GitHubWebhookFunction.cs` | ✅ Creado | Endpoints para webhooks y gestión de versiones |
+| `AriadnaKnowledgeStore.Functions/Program.cs` | ✅ Modificado | Configuración DI para stores versionados |
+| `AriadnaKnowledgeStore.Functions/appsettings.json` | ✅ Modificado | Config por defecto `Neo4jVersioned` |
 
 ### ✅ Scripts y Automatización
 
 | Archivo | Estado | Descripción |
 |---------|--------|-------------|
 | `scripts/Initialize-Neo4j-Versioned.ps1` | ✅ Creado | Inicializa índices y constraints en Neo4j |
-| `scripts/Setup-CodeIntel.ps1` | ✅ Creado | Setup completo automatizado (prerequisitos + config) |
+| `scripts/Setup-AriadnaKnowledgeStore.ps1` | ✅ Creado | Setup completo automatizado (prerequisitos + config) |
 
 ### ✅ Documentación
 
@@ -41,13 +41,13 @@ Se ha implementado completamente el **Versionado Temporal (Bitemporal)** en Code
 | `README.md` | ✅ Creado | Documentación principal con quick start |
 | `docs/Versionado_y_Rollback_Neo4j.md` | ✅ Creado | Análisis técnico de estrategias |
 | `docs/Guia_Uso_Versionado.md` | ✅ Creado | Guía práctica con ejemplos de uso |
-| `Discurso_CodeIntel_Presentacion.md` | ✅ Creado | Discurso de presentación para clientes |
+| `Discurso_AriadnaKnowledgeStore_Presentacion.md` | ✅ Creado | Discurso de presentación para clientes |
 
 ### ✅ Configuración
 
 | Archivo | Estado | Descripción |
 |---------|--------|-------------|
-| `CodeIntel.Functions/appsettings.versioned.json` | ✅ Creado | Template de configuración versionada |
+| `AriadnaKnowledgeStore.Functions/appsettings.versioned.json` | ✅ Creado | Template de configuración versionada |
 
 ---
 
@@ -219,10 +219,10 @@ LIMIT 10
 
 ```powershell
 # 1. Setup completo
-.\scripts\Setup-CodeIntel.ps1
+.\scripts\Setup-AriadnaKnowledgeStore.ps1
 
 # 2. Iniciar Functions
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 func start
 
 # 3. Verificar
@@ -236,16 +236,16 @@ curl http://localhost:7071/api/health  # (si existe)
 az login
 
 # 2. Crear recursos
-az group create --name rg-codeintel --location eastus
+az group create --name rg-AriadnaKnowledgeStore --location eastus
 
 # 3. Desplegar
-cd CodeIntel.Functions
-func azure functionapp publish func-codeintel
+cd AriadnaKnowledgeStore.Functions
+func azure functionapp publish func-AriadnaKnowledgeStore
 
 # 4. Configurar secrets
 az functionapp config appsettings set `
-  --name func-codeintel `
-  --resource-group rg-codeintel `
+  --name func-AriadnaKnowledgeStore `
+  --resource-group rg-AriadnaKnowledgeStore `
   --settings `
     "GraphStore__Type=Neo4jVersioned" `
     "Neo4j__Uri=bolt://your-neo4j:7687"
@@ -446,7 +446,7 @@ try {
 ## 📞 Soporte
 
 Para preguntas o issues:
-- 📧 GitHub Issues: https://github.com/jinfanteshk/CodeIntel/issues
+- 📧 GitHub Issues: https://github.com/jinfanteshk/AriadnaKnowledgeStore/issues
 - 📚 Documentación: Ver `/docs`
 - 💬 Discussions: GitHub Discussions
 
@@ -454,4 +454,4 @@ Para preguntas o issues:
 
 **Fecha de completación:** 2024
 **Versión:** 1.0.0-strategy1
-**Autor:** Equipo CodeIntel
+**Autor:** Equipo AriadnaKnowledgeStore

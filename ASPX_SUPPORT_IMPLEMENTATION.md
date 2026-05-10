@@ -1,12 +1,12 @@
-# Modificaciones para Soporte de Archivos ASPX Legacy .NET
+﻿# Modificaciones para Soporte de Archivos ASPX Legacy .NET
 
 ## Resumen de Cambios
 
-Este documento detalla las modificaciones implementadas para permitir el análisis de archivos ASPX/ASCX de aplicaciones legacy .NET Framework en el proyecto CodeIntel.
+Este documento detalla las modificaciones implementadas para permitir el análisis de archivos ASPX/ASCX de aplicaciones legacy .NET Framework en el proyecto AriadnaKnowledgeStore.
 
 ## 📋 Archivos Modificados
 
-### 1. **CodeIntel.Core\Models.cs**
+### 1. **AriadnaKnowledgeStore.Core\Models.cs**
 **Cambios:**
 - ✨ Agregados nuevos modelos de dominio:
   - `AspxPage`: Representa páginas .aspx o controles de usuario .ascx
@@ -21,11 +21,11 @@ Este documento detalla las modificaciones implementadas para permitir el anális
 - 📦 Actualizado `GraphModel`:
   - Ahora incluye `AspxPages`, `AspxControls` y `AspxEvents`
 
-### 2. **CodeIntel.Ingest\CodeIntel.Ingest.csproj**
+### 2. **AriadnaKnowledgeStore.Ingest\AriadnaKnowledgeStore.Ingest.csproj**
 **Cambios:**
 - ➕ Agregada dependencia `HtmlAgilityPack` v1.11.54 para parsear HTML/ASPX
 
-### 3. **CodeIntel.Ingest\Aspx\AspxAnalyzer.cs** ✨ NUEVO
+### 3. **AriadnaKnowledgeStore.Ingest\Aspx\AspxAnalyzer.cs** ✨ NUEVO
 **Funcionalidad:**
 - Analiza archivos .aspx y .ascx
 - Extrae directivas `@Page` y `@Control` usando expresiones regulares
@@ -40,7 +40,7 @@ Este documento detalla las modificaciones implementadas para permitir el anális
 - OnCommand, OnRowDataBound, OnItemDataBound
 - OnCheckedChanged
 
-### 4. **CodeIntel.Ingest\Roslyn\RoslynAnalyzer.cs**
+### 4. **AriadnaKnowledgeStore.Ingest\Roslyn\RoslynAnalyzer.cs**
 **Cambios:**
 - Integra `AspxAnalyzer` para análisis combinado
 - Busca archivos `*.aspx` y `*.ascx` además de `*.cs`
@@ -48,14 +48,14 @@ Este documento detalla las modificaciones implementadas para permitir el anális
 - Consolida resultados de análisis C# + ASPX en un solo `GraphModel`
 - Manejo robusto de errores para ASPX mal formados
 
-### 5. **CodeIntel.Ingest\Chunking\CodeChunker.cs**
+### 5. **AriadnaKnowledgeStore.Ingest\Chunking\CodeChunker.cs**
 **Cambios:**
 - ➕ Genera chunks para páginas ASPX
 - ➕ Genera chunks para controles ASPX
 - ➕ Genera chunks para eventos ASPX
 - Los chunks incluyen información contextual (code-behind, tipo de control, eventos)
 
-### 5. **CodeIntel.Graph\Neo4jVersionedGraphStore.cs**
+### 5. **AriadnaKnowledgeStore.Graph\Neo4jVersionedGraphStore.cs**
 **Cambios:**
 - Crea nodos `AspxPage` en Neo4j con propiedades:
   - id, name, filePath, codeBehindClass, inherits
@@ -72,13 +72,13 @@ Este documento detalla las modificaciones implementadas para permitir el anális
 - Soporte completo de versionado temporal para elementos ASPX
 - Actualizado logging con contadores ASPX
 
-### 6. **CodeIntel.Functions\Program.cs**
+### 6. **AriadnaKnowledgeStore.Functions\Program.cs**
 **Cambios:**
 - Actualizado logging para incluir contadores ASPX
 - Respuesta JSON ahora incluye:
   - `aspxPages`, `aspxControls`, `aspxEvents`
 
-### 7. **CodeIntel.Functions\GitHubWebhookFunction.cs**
+### 7. **AriadnaKnowledgeStore.Functions\GitHubWebhookFunction.cs**
 **Cambios:**
 - Endpoint de snapshot ahora incluye contadores ASPX en la respuesta
 

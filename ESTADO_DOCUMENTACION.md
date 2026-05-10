@@ -1,4 +1,4 @@
-# 📋 Estado de Documentación - CodeIntel
+﻿# 📋 Estado de Documentación - AriadnaKnowledgeStore
 
 **Fecha de auditoría:** 2024
 **Objetivo:** Verificar que toda la documentación está actualizada tras la simplificación de arquitectura

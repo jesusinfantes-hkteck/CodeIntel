@@ -1,4 +1,4 @@
-# CodeIntel - Knowledge Store con Versionado Temporal
+﻿# AriadnaKnowledgeStore - Knowledge Store con Versionado Temporal
 
 Sistema de análisis y gestión de conocimiento de código con soporte completo de versionado y rollback usando Neo4j.
 
@@ -42,8 +42,8 @@ Sistema de análisis y gestión de conocimiento de código con soporte completo 
 1. **Clonar repositorio**
    ```powershell
    cd C:\proyectos
-   git clone https://github.com/jinfanteshk/CodeIntel
-   cd CodeIntel\src
+   git clone https://github.com/jinfanteshk/AriadnaKnowledgeStore
+   cd AriadnaKnowledgeStore\src
    ```
 
 2. **Restaurar paquetes**
@@ -53,7 +53,7 @@ Sistema de análisis y gestión de conocimiento de código con soporte completo 
 
 3. **Configurar appsettings.json**
    ```powershell
-   cd CodeIntel.Functions
+   cd AriadnaKnowledgeStore.Functions
    copy appsettings.json appsettings.Development.json
    notepad appsettings.Development.json
    ```
@@ -118,7 +118,7 @@ Sistema de análisis y gestión de conocimiento de código con soporte completo 
 
 5. **Ejecutar localmente**
    ```powershell
-   cd ..\CodeIntel.Functions
+   cd ..\AriadnaKnowledgeStore.Functions
    func start
    ```
 
@@ -300,7 +300,7 @@ RETURN nodes(path) AS versions
                   │ Webhook
                   ▼
 ┌─────────────────────────────────────────────────────────────┐
-│             Azure Functions (CodeIntel.Functions)            │
+│             Azure Functions (AriadnaKnowledgeStore.Functions)            │
 │  ┌──────────────────┐  ┌────────────────────────────────┐  │
 │  │ GitHubWebhook    │  │ Version Management             │  │
 │  │ - HandleWebhook  │  │ - GetVersionHistory            │  │
@@ -326,11 +326,11 @@ RETURN nodes(path) AS versions
 
 | Proyecto | Descripción |
 |----------|-------------|
-| **CodeIntel.Core** | Modelos, interfaces, abstracciones |
-| **CodeIntel.Ingest** | Roslyn analyzer, GitHub source, chunking |
-| **CodeIntel.Graph** | Neo4j stores (versioned, multi-DB, legacy) |
-| **CodeIntel.Vector** | Azure OpenAI embeddings, Azure Search |
-| **CodeIntel.Functions** | Azure Functions, webhooks, orquestación |
+| **AriadnaKnowledgeStore.Core** | Modelos, interfaces, abstracciones |
+| **AriadnaKnowledgeStore.Ingest** | Roslyn analyzer, GitHub source, chunking |
+| **AriadnaKnowledgeStore.Graph** | Neo4j stores (versioned, multi-DB, legacy) |
+| **AriadnaKnowledgeStore.Vector** | Azure OpenAI embeddings, Azure Search |
+| **AriadnaKnowledgeStore.Functions** | Azure Functions, webhooks, orquestación |
 
 ---
 
@@ -422,7 +422,7 @@ if ($versions.totalVersions -gt 1) {
 
 - [Guía de Versionado y Rollback](../docs/Guia_Uso_Versionado.md)
 - [Estrategias de Versionado Comparadas](../docs/Versionado_y_Rollback_Neo4j.md)
-- [Discurso de Presentación](../Discurso_CodeIntel_Presentacion.md)
+- [Discurso de Presentación](../Discurso_AriadnaKnowledgeStore_Presentacion.md)
 
 ---
 
@@ -432,10 +432,10 @@ if ($versions.totalVersions -gt 1) {
 
 ```powershell
 # Variables
-$resourceGroup = "rg-codeintel"
+$resourceGroup = "rg-AriadnaKnowledgeStore"
 $location = "eastus"
-$storageAccount = "stcodeintel"
-$functionApp = "func-codeintel"
+$storageAccount = "stAriadnaKnowledgeStore"
+$functionApp = "func-AriadnaKnowledgeStore"
 $neo4jVm = "vm-neo4j"
 
 # Crear resource group
@@ -464,10 +464,10 @@ az functionapp create `
 ### 2. Desplegar código
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src\CodeIntel.Functions
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\AriadnaKnowledgeStore.Functions
 
 # Publicar
-func azure functionapp publish func-codeintel
+func azure functionapp publish func-AriadnaKnowledgeStore
 ```
 
 ### 3. Configurar Application Settings
@@ -509,9 +509,9 @@ az functionapp config appsettings set `
 ### "Package Neo4j.Driver not found"
 
 ```powershell
-cd CodeIntel.Graph
+cd AriadnaKnowledgeStore.Graph
 dotnet add package Neo4j.Driver
-cd ..\CodeIntel.Functions
+cd ..\AriadnaKnowledgeStore.Functions
 dotnet restore
 ```
 
@@ -547,7 +547,7 @@ MIT License - ver [LICENSE](LICENSE) para detalles
 
 ## 👥 Autores
 
-- **Equipo CodeIntel** - [GitHub](https://github.com/jinfanteshk/CodeIntel)
+- **Equipo AriadnaKnowledgeStore** - [GitHub](https://github.com/jinfanteshk/AriadnaKnowledgeStore)
 
 ---
 

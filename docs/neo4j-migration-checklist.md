@@ -1,23 +1,23 @@
-# Migration to Neo4j-Only Architecture
+﻿# Migration to Neo4j-Only Architecture
 
 ## ✅ Completed Changes
 
 ### 1. **Removed Azure Search Dependency**
 
 #### Files Modified:
-- ✅ `CodeIntel.Functions/Program.cs`
+- ✅ `AriadnaKnowledgeStore.Functions/Program.cs`
   - Removed `AzureSearchVectorIndex` registration for all graph store types
   - All Neo4j-based stores now use `Neo4jVectorIndex` for vectors
   - Gremlin store falls back to `MockVectorIndex` (since it can't use Neo4j vectors without Neo4j graph)
 
-- ✅ `CodeIntel.Functions/appsettings.json`
+- ✅ `AriadnaKnowledgeStore.Functions/appsettings.json`
   - Removed `Search` configuration section entirely
   - No longer needs `Search:Endpoint`, `Search:ApiKey`, or `Search:IndexName`
 
 ### 2. **Enhanced Neo4j Vector Index**
 
 #### Files Modified:
-- ✅ `CodeIntel.Graph/Neo4jVectorIndex.cs`
+- ✅ `AriadnaKnowledgeStore.Graph/Neo4jVectorIndex.cs`
   - Added `GraphRAGSearchAsync()` method for vector + graph traversal
   - Returns enriched results with related entities (CALLS, DEPENDS_ON, etc.)
   - Supports configurable hop depth (1-2 levels of relationships)
@@ -119,7 +119,7 @@ ORDER BY score DESC
   "Search": {
     "Endpoint": "https://my-search.search.windows.net",
     "ApiKey": "...",
-    "IndexName": "codeintel",
+    "IndexName": "AriadnaKnowledgeStore",
     "VectorDimensions": 1536
   },
   "AzureOpenAI": { "Endpoint": "...", "ApiKey": "..." }
@@ -292,7 +292,7 @@ If you no longer need Azure Search:
 
 ### 1. Remove NuGet Package (if not used elsewhere)
 ```bash
-dotnet remove CodeIntel.Vector/CodeIntel.Vector.csproj package Azure.Search.Documents
+dotnet remove AriadnaKnowledgeStore.Vector/AriadnaKnowledgeStore.Vector.csproj package Azure.Search.Documents
 ```
 
 ### 2. Delete Azure Search Service
@@ -303,7 +303,7 @@ az search service delete --name my-search-service --resource-group my-rg
 ### 3. Remove Unused Files
 ```bash
 # If AzureSearchVectorIndex is no longer needed anywhere
-rm CodeIntel.Vector/AzureSearchVectorIndex.cs
+rm AriadnaKnowledgeStore.Vector/AzureSearchVectorIndex.cs
 ```
 
 **Note:** Keep the file for now if you want to support other graph stores (like Gremlin) that might need it.

@@ -1,4 +1,4 @@
-# Guía de Ejecución Manual - Ingesta JadeiteSocialNetwork
+﻿# Guía de Ejecución Manual - Ingesta JadeiteSocialNetwork
 # Si no puedes ejecutar scripts PowerShell, copia/pega estos comandos uno por uno
 
 # ==============================================================================
@@ -6,7 +6,7 @@
 # ==============================================================================
 
 # En OTRA terminal debes tener corriendo:
-# cd C:\proyectos\gh-code-intel-mvp\src\CodeIntel.Functions
+# cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\AriadnaKnowledgeStore.Functions
 # func start
 
 # Verifica que esté corriendo:

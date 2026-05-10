@@ -1,4 +1,4 @@
-# GraphRAG Usage Examples
+﻿# GraphRAG Usage Examples
 
 ## Basic Vector Search
 
@@ -158,7 +158,7 @@ var cypherQuery = @"
 ## Hybrid Search (Vector + Business Logic)
 
 ```csharp
-public class CodeIntelService
+public class AriadnaKnowledgeStoreService
 {
     private readonly Neo4jVectorIndex _vectorIndex;
     private readonly IEmbeddingService _embeddingService;
@@ -218,7 +218,7 @@ public class EnrichedCodeResult
 
 **Usage:**
 ```csharp
-var service = new CodeIntelService(vectorIndex, embeddingService);
+var service = new AriadnaKnowledgeStoreService(vectorIndex, embeddingService);
 
 var results = await service.FindCodeWithContext(
     userQuery: "database connection pooling",

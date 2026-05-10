@@ -1,12 +1,12 @@
-# 📚 Índice de Documentación - CodeIntel
+﻿# 📚 Índice de Documentación - AriadnaKnowledgeStore
 
-Guía completa de navegación por toda la documentación del proyecto CodeIntel con versionado temporal usando Neo4j.
+Guía completa de navegación por toda la documentación del proyecto AriadnaKnowledgeStore con versionado temporal usando Neo4j.
 
 ---
 
 ## 🚀 Inicio Rápido
 
-**¿Primera vez con CodeIntel?** Comienza aquí:
+**¿Primera vez con AriadnaKnowledgeStore?** Comienza aquí:
 
 1. **[GETTING_STARTED.md](GETTING_STARTED.md)** ⭐
    - Guía paso a paso de 0 a funcionando
@@ -46,7 +46,7 @@ Guía completa de navegación por toda la documentación del proyecto CodeIntel 
 | Documento | Contenido | Cuándo usarlo |
 |-----------|-----------|---------------|
 | **[IMPLEMENTACION_COMPLETADA.md](IMPLEMENTACION_COMPLETADA.md)** | Resumen ejecutivo | Reportar a stakeholders |
-| **[Discurso_CodeIntel_Presentacion.md](Discurso_CodeIntel_Presentacion.md)** | Presentación para clientes | Demos y presentaciones |
+| **[Discurso_AriadnaKnowledgeStore_Presentacion.md](Discurso_AriadnaKnowledgeStore_Presentacion.md)** | Presentación para clientes | Demos y presentaciones |
 | **[CHANGELOG.md](CHANGELOG.md)** | Features entregadas | Planificación de releases |
 
 ### 🛠️ Para DevOps
@@ -54,7 +54,7 @@ Guía completa de navegación por toda la documentación del proyecto CodeIntel 
 | Documento | Contenido | Cuándo usarlo |
 |-----------|-----------|---------------|
 | **[README.md](README.md)** - Sección Despliegue | Deploy a Azure | CI/CD setup |
-| **[scripts/Setup-CodeIntel.ps1](scripts/Setup-CodeIntel.ps1)** | Automatización de setup | Ambientes nuevos |
+| **[scripts/Setup-AriadnaKnowledgeStore.ps1](scripts/Setup-AriadnaKnowledgeStore.ps1)** | Automatización de setup | Ambientes nuevos |
 | **[scripts/Initialize-Neo4j-Versioned.ps1](scripts/Initialize-Neo4j-Versioned.ps1)** | Inicialización de BD | Setup de Neo4j |
 
 ---
@@ -62,12 +62,12 @@ Guía completa de navegación por toda la documentación del proyecto CodeIntel 
 ## 📂 Estructura de Documentación
 
 ```
-CodeIntel/
+AriadnaKnowledgeStore/
 ├── 📄 README.md                              ← Documentación principal
 ├── 📄 GETTING_STARTED.md                     ← Guía de inicio rápido
 ├── 📄 IMPLEMENTACION_COMPLETADA.md           ← Resumen ejecutivo
 ├── 📄 CHANGELOG.md                           ← Historial de cambios
-├── 📄 Discurso_CodeIntel_Presentacion.md     ← Presentación clientes
+├── 📄 Discurso_AriadnaKnowledgeStore_Presentacion.md     ← Presentación clientes
 │
 ├── 📁 docs/                                  ← Documentación técnica
 │   ├── 📄 Guia_Uso_Versionado.md           ← Guía práctica de uso
@@ -75,7 +75,7 @@ CodeIntel/
 │   └── 📄 CHECKLIST_IMPLEMENTACION.md      ← Estado de implementación
 │
 └── 📁 scripts/                               ← Scripts de automatización
-    ├── 📜 Setup-CodeIntel.ps1              ← Setup completo
+    ├── 📜 Setup-AriadnaKnowledgeStore.ps1              ← Setup completo
     ├── 📜 Initialize-Neo4j-Versioned.ps1   ← Inicializar Neo4j
     └── 📜 Test-Strategy1.ps1               ← Tests automatizados
 ```
@@ -228,7 +228,7 @@ CodeIntel/
 
 ---
 
-### 📄 Discurso_CodeIntel_Presentacion.md
+### 📄 Discurso_AriadnaKnowledgeStore_Presentacion.md
 **Tamaño:** ~5 páginas | **Palabras:** ~1,800
 
 **Contenido:**
@@ -277,7 +277,7 @@ CodeIntel/
 
 ## 🛠️ Scripts de Automatización
 
-### 📜 scripts/Setup-CodeIntel.ps1
+### 📜 scripts/Setup-AriadnaKnowledgeStore.ps1
 **Líneas:** ~350 | **Duración:** ~5-10 minutos
 
 **Funciones:**
@@ -291,13 +291,13 @@ CodeIntel/
 
 **Uso:**
 ```powershell
-.\scripts\Setup-CodeIntel.ps1
+.\scripts\Setup-AriadnaKnowledgeStore.ps1
 ```
 
 **Parámetros:**
 - `-SkipNeo4j` - Omitir setup de Neo4j
 - `-SkipDotnet` - Omitir verificación de .NET
-- `-Neo4jPassword` - Password de Neo4j (default: "codeintel123")
+- `-Neo4jPassword` - Password de Neo4j (default: "AriadnaKnowledgeStore123")
 
 ---
 
@@ -314,7 +314,7 @@ CodeIntel/
 
 **Uso:**
 ```powershell
-.\scripts\Initialize-Neo4j-Versioned.ps1 -Password codeintel123
+.\scripts\Initialize-Neo4j-Versioned.ps1 -Password AriadnaKnowledgeStore123
 ```
 
 **Salida:**
@@ -370,7 +370,7 @@ CodeIntel/
 
 ```
 1. IMPLEMENTACION_COMPLETADA.md        - Resumen ejecutivo
-2. Discurso_CodeIntel_Presentacion.md - Presentación preparada
+2. Discurso_AriadnaKnowledgeStore_Presentacion.md - Presentación preparada
 3. CHANGELOG.md                        - Features entregadas
 ```
 
@@ -413,7 +413,7 @@ CodeIntel/
 | **Troubleshooting** | GETTING_STARTED.md | Troubleshooting Común |
 | **Casos de uso** | docs/Guia_Uso_Versionado.md | Casos de Uso |
 | **Métricas** | IMPLEMENTACION_COMPLETADA.md | Métricas de Proyecto |
-| **Presentación** | Discurso_CodeIntel_Presentacion.md | Todo |
+| **Presentación** | Discurso_AriadnaKnowledgeStore_Presentacion.md | Todo |
 
 ---
 
@@ -422,7 +422,7 @@ CodeIntel/
 ¿No encuentras lo que buscas?
 
 1. **Buscar en documentos** (Ctrl+F en cada archivo)
-2. **GitHub Issues**: https://github.com/jinfanteshk/CodeIntel/issues
+2. **GitHub Issues**: https://github.com/jinfanteshk/AriadnaKnowledgeStore/issues
 3. **GitHub Discussions**: Preguntas generales
 4. **Email**: (configurar si aplica)
 
@@ -446,7 +446,7 @@ Para nuevos desarrolladores:
 
 **Última actualización:** 15 de enero de 2024  
 **Versión de documentación:** 1.0.0  
-**Mantenida por:** Equipo CodeIntel
+**Mantenida por:** Equipo AriadnaKnowledgeStore
 
 ---
 

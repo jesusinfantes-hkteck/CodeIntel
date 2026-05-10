@@ -1,5 +1,5 @@
-# CodeIntel - Setup Script para Neo4j AuraDB (Cloud)
-# Este script configura CodeIntel para usar Neo4j en la nube
+﻿# AriadnaKnowledgeStore - Setup Script para Neo4j AuraDB (Cloud)
+# Este script configura AriadnaKnowledgeStore para usar Neo4j en la nube
 
 param(
     [switch]$SkipDotnet,
@@ -12,7 +12,7 @@ $ErrorActionPreference = "Stop"
 Write-Host @"
 ╔════════════════════════════════════════════════════════╗
 ║                                                        ║
-║     CodeIntel Setup - Neo4j AuraDB (Cloud)             ║
+║     AriadnaKnowledgeStore Setup - Neo4j AuraDB (Cloud)             ║
 ║     Estrategia 1: Versionado Temporal                  ║
 ║                                                        ║
 ╚════════════════════════════════════════════════════════╝
@@ -66,7 +66,7 @@ Write-Host ""
 Write-Host "📦 Paso 2: Verificando repositorio..." -ForegroundColor Yellow
 Write-Host ""
 
-$repoPath = "C:\proyectos\gh-code-intel-mvp\src"
+$repoPath = "C:\proyectos\gh-ariadna-knowledgestore-mvp\src"
 
 if (Test-Path $repoPath) {
     Write-Host "  → Repositorio encontrado en: $repoPath" -ForegroundColor Green
@@ -161,7 +161,7 @@ Write-Host ""
 Write-Host "⚙️  Paso 6: Configurando appsettings.json..." -ForegroundColor Yellow
 Write-Host ""
 
-$functionsPath = Join-Path $repoPath "CodeIntel.Functions"
+$functionsPath = Join-Path $repoPath "AriadnaKnowledgeStore.Functions"
 $appsettingsPath = Join-Path $functionsPath "appsettings.json"
 $appsettingsDevPath = Join-Path $functionsPath "appsettings.Development.json"
 
@@ -315,5 +315,5 @@ Write-Host "   • Ver métricas: Console → Tu instancia → 'Metrics'" -Foreg
 Write-Host "   • Reset password: Console → Tu instancia → Settings → 'Reset password'" -ForegroundColor Gray
 Write-Host ""
 
-Write-Host "¡Listo para usar CodeIntel con Neo4j en la nube! ☁️" -ForegroundColor Green
+Write-Host "¡Listo para usar AriadnaKnowledgeStore con Neo4j en la nube! ☁️" -ForegroundColor Green
 Write-Host ""

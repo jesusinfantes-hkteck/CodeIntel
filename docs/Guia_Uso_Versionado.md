@@ -1,8 +1,8 @@
-# Versionado y Rollback en CodeIntel - Guía de Uso
+﻿# Versionado y Rollback en AriadnaKnowledgeStore - Guía de Uso
 
 ## Resumen
 
-CodeIntel ahora soporta **versionado completo del Knowledge Store** con capacidad de rollback. Cada vez que se analiza un repositorio (via webhook, manualmente, o por CI/CD), se crea una **nueva versión** que se puede consultar, comparar o restaurar.
+AriadnaKnowledgeStore ahora soporta **versionado completo del Knowledge Store** con capacidad de rollback. Cada vez que se analiza un repositorio (via webhook, manualmente, o por CI/CD), se crea una **nueva versión** que se puede consultar, comparar o restaurar.
 
 ---
 
@@ -39,7 +39,7 @@ func azure functionapp publish <your-function-app-name>
 ### 3. Cada push automáticamente crea una nueva versión
 
 ```
-Push to GitHub → Webhook → CodeIntel procesa → Nueva versión en Neo4j
+Push to GitHub → Webhook → AriadnaKnowledgeStore procesa → Nueva versión en Neo4j
 ```
 
 ---
@@ -373,7 +373,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger CodeIntel Update
+      - name: Trigger AriadnaKnowledgeStore Update
         run: |
           curl -X POST https://your-function-app.net/api/webhook/github \
             -H "Content-Type: application/json" \

@@ -1,4 +1,4 @@
-# ✅ IMPLEMENTACIÓN COMPLETA: Soporte ASPX para CodeIntel
+﻿# ✅ IMPLEMENTACIÓN COMPLETA: Soporte ASPX para AriadnaKnowledgeStore
 
 ## 🎉 Estado: COMPLETADO Y COMPILANDO EXITOSAMENTE
 
@@ -22,42 +22,42 @@ Todas las modificaciones necesarias para leer y analizar archivos ASPX de reposi
 ## 📁 Archivos Modificados (8 archivos)
 
 ### Modelo de Dominio
-1. **CodeIntel.Core\Models.cs** ✏️
+1. **AriadnaKnowledgeStore.Core\Models.cs** ✏️
    - Nuevos tipos: `AspxPage`, `AspxControl`, `AspxEvent`
    - Nuevos edge types: `CodeBehind`, `HasControl`, `HandlesEvent`
    - `GraphModel` actualizado con colecciones ASPX
 
 ### Análisis
-2. **CodeIntel.Ingest\Aspx\AspxAnalyzer.cs** ✨ NUEVO
+2. **AriadnaKnowledgeStore.Ingest\Aspx\AspxAnalyzer.cs** ✨ NUEVO
    - Parser de ASPX con regex y HtmlAgilityPack
    - Detección de 10+ eventos comunes
    - Manejo robusto de errores
 
-3. **CodeIntel.Ingest\Roslyn\RoslynAnalyzer.cs** ✏️
+3. **AriadnaKnowledgeStore.Ingest\Roslyn\RoslynAnalyzer.cs** ✏️
    - Integración de análisis C# + ASPX
    - Exclusión de archivos `.designer.cs`
    - Consolidación de resultados
 
-4. **CodeIntel.Ingest\Chunking\CodeChunker.cs** ✏️
+4. **AriadnaKnowledgeStore.Ingest\Chunking\CodeChunker.cs** ✏️
    - Chunks para páginas, controles y eventos ASPX
    - Metadata contextual para mejor búsqueda
 
 ### Almacenamiento
-5. **CodeIntel.Graph\Neo4jVersionedGraphStore.cs** ✏️
+5. **AriadnaKnowledgeStore.Graph\Neo4jVersionedGraphStore.cs** ✏️
    - Nodos: `AspxPage`, `AspxControl`, `AspxEvent`
    - Relaciones: `HAS_CONTROL`, `TRIGGERS`, `CODE_BEHIND`, etc.
    - Soporte completo de versionado temporal para ASPX
 
 ### Orquestación
-6. **CodeIntel.Functions\Program.cs** ✏️
+6. **AriadnaKnowledgeStore.Functions\Program.cs** ✏️
    - Logging actualizado con métricas ASPX
    - Respuesta JSON con contadores ASPX
 
-7. **CodeIntel.Functions\GitHubWebhookFunction.cs** ✏️
+7. **AriadnaKnowledgeStore.Functions\GitHubWebhookFunction.cs** ✏️
     - Snapshot endpoint incluye datos ASPX
 
 ### Dependencias
-8. **CodeIntel.Ingest\CodeIntel.Ingest.csproj** ✏️
+8. **AriadnaKnowledgeStore.Ingest\AriadnaKnowledgeStore.Ingest.csproj** ✏️
     - Agregado: `HtmlAgilityPack` v1.11.54
 
 ---
@@ -93,7 +93,7 @@ Todas las modificaciones necesarias para leer y analizar archivos ASPX de reposi
 
 ### 1. Restaurar Dependencias
 ```bash
-cd CodeIntel.Ingest
+cd AriadnaKnowledgeStore.Ingest
 dotnet restore
 ```
 
@@ -334,7 +334,7 @@ Este proyecto mantiene la licencia original del repositorio.
 
 ## ✨ Conclusión
 
-**El sistema CodeIntel ahora tiene capacidad completa para analizar aplicaciones legacy .NET Framework basadas en WebForms**, permitiendo:
+**El sistema AriadnaKnowledgeStore ahora tiene capacidad completa para analizar aplicaciones legacy .NET Framework basadas en WebForms**, permitiendo:
 
 - 🔍 Entender arquitectura de aplicaciones antiguas
 - 📊 Visualizar dependencias UI → Code

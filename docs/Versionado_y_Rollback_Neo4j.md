@@ -1,4 +1,4 @@
-# Versionado y Rollback en Neo4j para CodeIntel
+﻿# Versionado y Rollback en Neo4j para AriadnaKnowledgeStore
 
 ## Problema
 

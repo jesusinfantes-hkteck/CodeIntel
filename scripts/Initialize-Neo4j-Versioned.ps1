@@ -1,4 +1,4 @@
-# Script para inicializar Neo4j con los índices necesarios para CodeIntel
+﻿# Script para inicializar Neo4j con los índices necesarios para AriadnaKnowledgeStore
 # con soporte de versionado temporal
 #
 # Uso:
@@ -15,7 +15,7 @@ param(
 )
 
 Write-Host "=======================================" -ForegroundColor Cyan
-Write-Host "CodeIntel - Neo4j Initialization" -ForegroundColor Cyan
+Write-Host "AriadnaKnowledgeStore - Neo4j Initialization" -ForegroundColor Cyan
 Write-Host "Versionado Temporal Neo4j" -ForegroundColor Cyan
 Write-Host "=======================================" -ForegroundColor Cyan
 Write-Host ""
@@ -37,7 +37,7 @@ if (-not $neo4jModule) {
 # Queries Cypher para inicialización
 $cypherQueries = @"
 // ===================================================
-// CodeIntel - Índices y Constraints para Neo4j
+// AriadnaKnowledgeStore - Índices y Constraints para Neo4j
 // Versionado Temporal Neo4j
 // ===================================================
 
@@ -156,5 +156,5 @@ catch {
 Write-Host ""
 Write-Host "=======================================" -ForegroundColor Cyan
 Write-Host "Siguiente paso:" -ForegroundColor Cyan
-Write-Host "  dotnet run --project CodeIntel.Functions" -ForegroundColor White
+Write-Host "  dotnet run --project AriadnaKnowledgeStore.Functions" -ForegroundColor White
 Write-Host "=======================================" -ForegroundColor Cyan

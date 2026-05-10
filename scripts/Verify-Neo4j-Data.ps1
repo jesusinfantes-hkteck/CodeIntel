@@ -1,9 +1,9 @@
-# Script para verificar los nodos creados en Neo4j después de la ingesta
+﻿# Script para verificar los nodos creados en Neo4j después de la ingesta
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "CodeIntel - Verificación Neo4j" -ForegroundColor Cyan
+Write-Host "AriadnaKnowledgeStore - Verificación Neo4j" -ForegroundColor Cyan
 Write-Host "Repositorio: JadeiteSocialNetwork" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""

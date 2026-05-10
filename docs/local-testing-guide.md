@@ -1,4 +1,4 @@
-# Guía de Prueba Local - CodeIntel
+﻿# Guía de Prueba Local - AriadnaKnowledgeStore
 
 ## 🎯 Objetivo
 
@@ -64,7 +64,7 @@ winget install Microsoft.Azure.FunctionsCoreTools
 **Opción A: Usando F5 (Debug)**
 
 1. En Visual Studio, abre el Solution Explorer
-2. Haz clic derecho en el proyecto `CodeIntel.Functions`
+2. Haz clic derecho en el proyecto `AriadnaKnowledgeStore.Functions`
 3. Selecciona **"Set as Startup Project"**
 4. Presiona **F5** o **Ctrl+F5**
 5. Visual Studio iniciará el host de Functions
@@ -75,7 +75,7 @@ winget install Microsoft.Azure.FunctionsCoreTools
 2. Navega al proyecto:
 
 ```powershell
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 ```
 
 3. Inicia Functions:
@@ -134,7 +134,7 @@ Invoke-RestMethod -Uri "http://localhost:7071/api/ingest" `
 ```powershell
 $body = @{
     owner = "jesusinfantes-hkteck"
-    repo = "CodeIntel"
+    repo = "AriadnaKnowledgeStore"
 } | ConvertTo-Json
 
 Invoke-RestMethod -Uri "http://localhost:7071/api/ingest" `
@@ -428,8 +428,8 @@ Invoke-RestMethod -Uri "http://localhost:7071/api/ingest" -Method POST -Body $bo
 ### Medianos (para prueba real)
 
 ```powershell
-# Tu propio proyecto CodeIntel
-$body = @{ owner="jesusinfantes-hkteck"; repo="CodeIntel" } | ConvertTo-Json
+# Tu propio proyecto AriadnaKnowledgeStore
+$body = @{ owner="jesusinfantes-hkteck"; repo="AriadnaKnowledgeStore" } | ConvertTo-Json
 Invoke-RestMethod -Uri "http://localhost:7071/api/ingest" -Method POST -Body $body -ContentType "application/json"
 
 # Proyecto .NET popular

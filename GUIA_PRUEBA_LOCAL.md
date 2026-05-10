@@ -1,4 +1,4 @@
-# 🧪 Guía de Prueba Local - JadeiteSocialNetwork
+﻿# 🧪 Guía de Prueba Local - JadeiteSocialNetwork
 
 Esta guía te ayudará a probar localmente la ingesta del repositorio JadeiteSocialNetwork y verificar los nodos creados en Neo4j.
 
@@ -23,7 +23,7 @@ Antes de empezar, verifica que tienes:
 4. ✅ **Configuración verificada**
    ```powershell
    # Verificar que local.settings.json tiene las credenciales correctas
-   Get-Content CodeIntel.Functions/local.settings.json
+   Get-Content AriadnaKnowledgeStore.Functions/local.settings.json
    ```
 
 ---
@@ -33,13 +33,13 @@ Antes de empezar, verifica que tienes:
 ### 1.1 Abrir terminal en la carpeta del proyecto
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src
 ```
 
-### 1.2 Navegar a CodeIntel.Functions
+### 1.2 Navegar a AriadnaKnowledgeStore.Functions
 
 ```powershell
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 ```
 
 ### 1.3 Iniciar Azure Functions
@@ -71,7 +71,7 @@ Host started (XXXms)
 ### 2.2 Navegar a la carpeta de scripts
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src\scripts
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\scripts
 ```
 
 ### 2.3 Ejecutar script de ingesta
@@ -97,7 +97,7 @@ cd C:\proyectos\gh-code-intel-mvp\src\scripts
 **Salida esperada:**
 ```
 ========================================
-CodeIntel - Test Ingesta Local
+AriadnaKnowledgeStore - Test Ingesta Local
 Repositorio: JadeiteSocialNetwork
 ========================================
 
@@ -217,7 +217,7 @@ Deberías ver un grafo con:
 Para obtener todas las queries de verificación pre-generadas:
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src\scripts
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\scripts
 .\Verify-Neo4j-Data.ps1
 ```
 
@@ -240,7 +240,7 @@ Este script imprime queries para:
 1. Abre otra terminal
 2. Ejecuta:
    ```powershell
-   cd CodeIntel.Functions
+   cd AriadnaKnowledgeStore.Functions
    func start
    ```
 3. Espera a que inicie completamente
@@ -251,7 +251,7 @@ Este script imprime queries para:
 **Solución:**
 1. Verifica tu token en: https://github.com/settings/tokens
 2. Asegúrate que tiene permisos `repo`
-3. Actualiza `CodeIntel.Functions/local.settings.json`:
+3. Actualiza `AriadnaKnowledgeStore.Functions/local.settings.json`:
    ```json
    "GitHub:Token": "ghp_TU_TOKEN_NUEVO"
    ```

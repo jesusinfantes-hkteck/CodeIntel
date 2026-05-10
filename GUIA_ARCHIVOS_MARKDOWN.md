@@ -1,4 +1,4 @@
-# 📚 Guía de Archivos Markdown - ¿Cuáles Guardar en Git?
+﻿# 📚 Guía de Archivos Markdown - ¿Cuáles Guardar en Git?
 
 ## ✅ **ESENCIALES** (Guardar siempre)
 
@@ -124,7 +124,7 @@
 **Razón:** Duplica información de CONFIGURACION_NEO4J_AURADB.md  
 **Acción:** Consolidar en CONFIGURACION_NEO4J_AURADB.md
 
-### 24. **Discurso_CodeIntel_Presentacion.md**
+### 24. **Discurso_AriadnaKnowledgeStore_Presentacion.md**
 **Estado:** OPCIONAL  
 **Razón:** Material de presentación, no documentación técnica  
 **Acción:** Mover a carpeta /presentations/ o eliminar
@@ -157,7 +157,7 @@
 ❌ CLEANUP_AZURE_GREMLIN.md
 ❌ SIMPLIFICATION_NEO4J_STRATEGY.md
 ❌ FIX_AZURE_SEARCH_ERROR.md
-❌ Discurso_CodeIntel_Presentacion.md (o mover a /presentations)
+❌ Discurso_AriadnaKnowledgeStore_Presentacion.md (o mover a /presentations)
 ```
 
 ### 🔄 **Consolidar y luego eliminar originales (6 archivos):**
@@ -195,7 +195,7 @@ Remove-Item FIX_AZURE_SEARCH_ERROR.md
 
 # 3. Opcional: Crear carpeta para archivos históricos
 # New-Item -ItemType Directory -Path "archive"
-# Move-Item Discurso_CodeIntel_Presentacion.md archive/
+# Move-Item Discurso_AriadnaKnowledgeStore_Presentacion.md archive/
 ```
 
 ---
@@ -203,7 +203,7 @@ Remove-Item FIX_AZURE_SEARCH_ERROR.md
 ## 📁 **ESTRUCTURA RECOMENDADA FINAL**
 
 ```
-gh-code-intel-mvp/src/
+gh-ariadna-knowledgestore-mvp/src/
 ├── README.md                              # Documentación principal
 ├── CHANGELOG.md                           # Historial de cambios
 ├── GETTING_STARTED.md                     # Guía de inicio rápido

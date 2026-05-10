@@ -1,10 +1,10 @@
-# CodeIntel - Setup Script para Estrategia 1 (Versionado Temporal)
-# Este script configura todo lo necesario para ejecutar CodeIntel localmente
+﻿# AriadnaKnowledgeStore - Setup Script para Estrategia 1 (Versionado Temporal)
+# Este script configura todo lo necesario para ejecutar AriadnaKnowledgeStore localmente
 
 param(
     [switch]$SkipNeo4j,
     [switch]$SkipDotnet,
-    [string]$Neo4jPassword = "codeintel123"
+    [string]$Neo4jPassword = "AriadnaKnowledgeStore123"
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,7 +12,7 @@ $ErrorActionPreference = "Stop"
 Write-Host @"
 ╔════════════════════════════════════════════════════════╗
 ║                                                        ║
-║           CodeIntel Setup - Estrategia 1               ║
+║           AriadnaKnowledgeStore Setup - Estrategia 1               ║
 ║           Versionado Temporal (Bitemporal)             ║
 ║                                                        ║
 ╚════════════════════════════════════════════════════════╝
@@ -81,7 +81,7 @@ Write-Host ""
 Write-Host "📦 Paso 2: Verificando repositorio..." -ForegroundColor Yellow
 Write-Host ""
 
-$repoPath = "C:\proyectos\gh-code-intel-mvp\src"
+$repoPath = "C:\proyectos\gh-ariadna-knowledgestore-mvp\src"
 
 if (Test-Path $repoPath) {
     Write-Host "  → Repositorio encontrado en: $repoPath" -ForegroundColor Green
@@ -89,7 +89,7 @@ if (Test-Path $repoPath) {
 } else {
     Write-Host "  ❌ Repositorio no encontrado en: $repoPath" -ForegroundColor Red
     Write-Host "     Por favor clona el repositorio primero:" -ForegroundColor Yellow
-    Write-Host "     git clone https://github.com/jinfanteshk/CodeIntel C:\proyectos\gh-code-intel-mvp" -ForegroundColor Cyan
+    Write-Host "     git clone https://github.com/jinfanteshk/AriadnaKnowledgeStore C:\proyectos\gh-ariadna-knowledgestore-mvp" -ForegroundColor Cyan
     exit 1
 }
 
@@ -116,15 +116,15 @@ if (-not $SkipNeo4j) {
         Write-Host "  → Iniciando Neo4j en Docker..." -ForegroundColor Cyan
 
         # Verificar si ya existe contenedor
-        $existingContainer = docker ps -a --filter "name=neo4j-codeintel" --format "{{.Names}}"
+        $existingContainer = docker ps -a --filter "name=neo4j-AriadnaKnowledgeStore" --format "{{.Names}}"
 
         if ($existingContainer) {
             Write-Host "     Contenedor existente encontrado. Iniciando..." -ForegroundColor Yellow
-            docker start neo4j-codeintel
+            docker start neo4j-AriadnaKnowledgeStore
         } else {
             Write-Host "     Creando nuevo contenedor..." -ForegroundColor Yellow
             docker run -d `
-                --name neo4j-codeintel `
+                --name neo4j-AriadnaKnowledgeStore `
                 -p 7474:7474 -p 7687:7687 `
                 -e NEO4J_AUTH=neo4j/$Neo4jPassword `
                 -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes `
@@ -233,7 +233,7 @@ Write-Host ""
 Write-Host "⚙️  Paso 6: Configurando appsettings..." -ForegroundColor Yellow
 Write-Host ""
 
-$functionsPath = Join-Path $repoPath "CodeIntel.Functions"
+$functionsPath = Join-Path $repoPath "AriadnaKnowledgeStore.Functions"
 $appsettingsPath = Join-Path $functionsPath "appsettings.json"
 $appsettingsDevPath = Join-Path $functionsPath "appsettings.Development.json"
 
@@ -330,10 +330,10 @@ Write-Host "   • docs/Versionado_y_Rollback_Neo4j.md - Detalles técnicos" -Fo
 Write-Host ""
 
 Write-Host "💡 Tips:" -ForegroundColor Yellow
-Write-Host "   • Para ver logs: docker logs -f neo4j-codeintel" -ForegroundColor Gray
-Write-Host "   • Para detener Neo4j: docker stop neo4j-codeintel" -ForegroundColor Gray
-Write-Host "   • Para reiniciar: docker start neo4j-codeintel" -ForegroundColor Gray
+Write-Host "   • Para ver logs: docker logs -f neo4j-AriadnaKnowledgeStore" -ForegroundColor Gray
+Write-Host "   • Para detener Neo4j: docker stop neo4j-AriadnaKnowledgeStore" -ForegroundColor Gray
+Write-Host "   • Para reiniciar: docker start neo4j-AriadnaKnowledgeStore" -ForegroundColor Gray
 Write-Host ""
 
-Write-Host "¡Listo para usar CodeIntel! 🎉" -ForegroundColor Green
+Write-Host "¡Listo para usar AriadnaKnowledgeStore! 🎉" -ForegroundColor Green
 Write-Host ""

@@ -1,8 +1,8 @@
-# Neo4j GraphRAG Architecture
+﻿# Neo4j GraphRAG Architecture
 
 ## Overview
 
-**CodeIntel** now uses **Neo4j as a unified Vector Graph Database** for both:
+**AriadnaKnowledgeStore** now uses **Neo4j as a unified Vector Graph Database** for both:
 - 🔗 **Graph relationships** (classes, methods, calls, dependencies)
 - 🧠 **Vector embeddings** (semantic code search)
 
@@ -259,7 +259,7 @@ WHERE type = 'VECTOR'
 
 ## Summary
 
-By using **Neo4j for both graph and vector**, CodeIntel can:
+By using **Neo4j for both graph and vector**, AriadnaKnowledgeStore can:
 1. Perform semantic search (vector similarity)
 2. Immediately traverse to related entities (graph)
 3. Return rich, contextual code subsets to the LLM

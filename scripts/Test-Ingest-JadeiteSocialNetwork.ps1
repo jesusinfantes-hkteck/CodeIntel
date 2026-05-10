@@ -1,10 +1,10 @@
-# Script para probar ingesta local de JadeiteSocialNetwork
+﻿# Script para probar ingesta local de JadeiteSocialNetwork
 # Requisitos: Azure Functions Core Tools corriendo (func start)
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "CodeIntel - Test Ingesta Local" -ForegroundColor Cyan
+Write-Host "AriadnaKnowledgeStore - Test Ingesta Local" -ForegroundColor Cyan
 Write-Host "Repositorio: JadeiteSocialNetwork" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
@@ -32,7 +32,7 @@ catch {
     Write-Host "❌ ERROR: Azure Functions no está corriendo en http://localhost:7071" -ForegroundColor Red
     Write-Host ""
     Write-Host "💡 Ejecuta primero en otra terminal:" -ForegroundColor Yellow
-    Write-Host "   cd CodeIntel.Functions" -ForegroundColor Gray
+    Write-Host "   cd AriadnaKnowledgeStore.Functions" -ForegroundColor Gray
     Write-Host "   func start" -ForegroundColor Gray
     Write-Host ""
     exit 1
@@ -141,7 +141,7 @@ catch {
     Write-Host "   4. Timeout (repositorio muy grande)" -ForegroundColor Gray
     Write-Host ""
     Write-Host "Verifica la configuracion en:" -ForegroundColor Yellow
-    Write-Host "   CodeIntel.Functions/local.settings.json" -ForegroundColor Gray
+    Write-Host "   AriadnaKnowledgeStore.Functions/local.settings.json" -ForegroundColor Gray
     Write-Host ""
     exit 1
 }

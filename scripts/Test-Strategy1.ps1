@@ -1,4 +1,4 @@
-# Script de prueba rápida para verificar la Estrategia 1
+﻿# Script de prueba rápida para verificar la Estrategia 1
 # Ejecutar después de iniciar func start
 
 param(
@@ -13,7 +13,7 @@ $ErrorActionPreference = "Continue"
 Write-Host @"
 ╔════════════════════════════════════════════════════════╗
 ║                                                        ║
-║        CodeIntel - Test de Estrategia 1                ║
+║        AriadnaKnowledgeStore - Test de Estrategia 1                ║
 ║        Versionado Temporal                             ║
 ║                                                        ║
 ╚════════════════════════════════════════════════════════╝

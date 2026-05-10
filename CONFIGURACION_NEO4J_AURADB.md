@@ -1,6 +1,6 @@
-# 🌐 Guía de Configuración - Neo4j AuraDB (Cloud)
+﻿# 🌐 Guía de Configuración - Neo4j AuraDB (Cloud)
 
-Esta guía te ayuda a configurar CodeIntel con **Neo4j AuraDB Cloud** (14 días gratis) en lugar de Neo4j local.
+Esta guía te ayuda a configurar AriadnaKnowledgeStore con **Neo4j AuraDB Cloud** (14 días gratis) en lugar de Neo4j local.
 
 ---
 
@@ -32,7 +32,7 @@ https://console.neo4j.io/projects/2a4895fc-e83c-4a1e-987f-f918237f8667/home
 1. Click en **"New Instance"** o **"Create instance"**
 2. Selecciona **"AuraDB Free"** (14-day trial)
 3. Configuración:
-   - **Name:** `codeintel-dev` (o el nombre que prefieras)
+   - **Name:** `AriadnaKnowledgeStore-dev` (o el nombre que prefieras)
    - **Region:** Selecciona el más cercano a ti
      - Europa: `europe-west1` (Bélgica)
      - USA: `us-east1` (Carolina del Sur)
@@ -96,7 +96,7 @@ Es el password que copiaste en el paso 1.3.
 ### 3.1 Abrir archivo de configuración
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src\CodeIntel.Functions
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\AriadnaKnowledgeStore.Functions
 code appsettings.json
 ```
 
@@ -176,7 +176,7 @@ Copia y pega estas queries en Neo4j Browser:
 
 ```cypher
 // ===================================================
-// CodeIntel - Índices y Constraints para Neo4j AuraDB
+// AriadnaKnowledgeStore - Índices y Constraints para Neo4j AuraDB
 // Estrategia 1: Versionado Temporal
 // ===================================================
 
@@ -227,13 +227,13 @@ SHOW INDEXES;
 ### 5.1 Desde Visual Studio / PowerShell
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src
 
 # Compilar
 dotnet build
 
 # Iniciar Functions
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 func start
 ```
 
@@ -467,7 +467,7 @@ Antes de continuar, verifica:
 
 ## 🎉 ¡Listo!
 
-Ahora tienes CodeIntel conectado a **Neo4j AuraDB Cloud** con:
+Ahora tienes AriadnaKnowledgeStore conectado a **Neo4j AuraDB Cloud** con:
 
 - ✅ Versionado temporal (Estrategia 1)
 - ✅ Sin instalación local
@@ -478,4 +478,4 @@ Ahora tienes CodeIntel conectado a **Neo4j AuraDB Cloud** con:
 
 ---
 
-*Generado para CodeIntel v1.0.0 con Neo4j AuraDB Cloud*
+*Generado para AriadnaKnowledgeStore v1.0.0 con Neo4j AuraDB Cloud*

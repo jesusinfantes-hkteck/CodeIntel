@@ -1,6 +1,6 @@
-# 🚀 Guía de Inicio Rápido - CodeIntel
+﻿# 🚀 Guía de Inicio Rápido - AriadnaKnowledgeStore
 
-Esta guía te llevará de 0 a tener CodeIntel funcionando con versionado temporal en **menos de 15 minutos**.
+Esta guía te llevará de 0 a tener AriadnaKnowledgeStore funcionando con versionado temporal en **menos de 15 minutos**.
 
 ---
 
@@ -21,10 +21,10 @@ Esta guía te llevará de 0 a tener CodeIntel funcionando con versionado tempora
 
 ```powershell
 # Abrir PowerShell como Administrador
-cd C:\proyectos\gh-code-intel-mvp\src
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src
 
 # Ejecutar setup
-.\scripts\Setup-CodeIntel.ps1
+.\scripts\Setup-AriadnaKnowledgeStore.ps1
 
 # El script hará:
 # ✅ Verificar prerequisitos
@@ -38,7 +38,7 @@ cd C:\proyectos\gh-code-intel-mvp\src
 ### Paso 2: Iniciar Functions
 
 ```powershell
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 func start
 ```
 
@@ -64,7 +64,7 @@ Host initialized (XXXms)
 .\scripts\Test-Strategy1.ps1
 ```
 
-✅ **¡Listo!** CodeIntel está funcionando con versionado temporal Neo4j.
+✅ **¡Listo!** AriadnaKnowledgeStore está funcionando con versionado temporal Neo4j.
 
 ---
 
@@ -107,9 +107,9 @@ choco install azure-functions-core-tools-4
 
 ```powershell
 docker run -d `
-  --name neo4j-codeintel `
+  --name neo4j-AriadnaKnowledgeStore `
   -p 7474:7474 -p 7687:7687 `
-  -e NEO4J_AUTH=neo4j/codeintel123 `
+  -e NEO4J_AUTH=neo4j/AriadnaKnowledgeStore123 `
   -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes `
   neo4j:5-community
 ```
@@ -126,7 +126,7 @@ docker run -d `
 #### Si usas AuraDB Cloud:
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src\scripts
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\scripts
 .\Initialize-Neo4j-Versioned.ps1 `
   -Uri "neo4j+s://TU-INSTANCIA.databases.neo4j.io" `
   -User "neo4j" `
@@ -136,8 +136,8 @@ cd C:\proyectos\gh-code-intel-mvp\src\scripts
 #### Si usas Neo4j Local (Docker/Desktop):
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src\scripts
-.\Initialize-Neo4j-Versioned.ps1 -Password codeintel123
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src\scripts
+.\Initialize-Neo4j-Versioned.ps1 -Password AriadnaKnowledgeStore123
 ```
 
 O manualmente en Neo4j Browser:
@@ -179,7 +179,7 @@ SHOW INDEXES;
 3. Permisos: `repo` (full control)
 4. Copiar el token
 
-Editar `CodeIntel.Functions/appsettings.Development.json`:
+Editar `AriadnaKnowledgeStore.Functions/appsettings.Development.json`:
 
 **Si usas AuraDB Cloud:**
 ```json
@@ -210,7 +210,7 @@ Editar `CodeIntel.Functions/appsettings.Development.json`:
   "Neo4j": {
     "Uri": "bolt://localhost:7687",
     "User": "neo4j",
-    "Password": "codeintel123"
+    "Password": "AriadnaKnowledgeStore123"
   }
 }
 ```
@@ -218,7 +218,7 @@ Editar `CodeIntel.Functions/appsettings.Development.json`:
 ### 6️⃣ Compilar y Ejecutar
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src
 
 # Restaurar paquetes
 dotnet restore
@@ -227,7 +227,7 @@ dotnet restore
 dotnet build
 
 # Ejecutar
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 func start
 ```
 
@@ -268,7 +268,7 @@ curl -X POST http://localhost:7071/api/ingest \
 ```json
 {
   "repo": "octocat/Hello-World@master",
-  "downloadedTo": "C:\\Users\\...\\Temp\\codeintel\\...",
+  "downloadedTo": "C:\\Users\\...\\Temp\\AriadnaKnowledgeStore\\...",
   "classes": 2,
   "methods": 8,
   "edges": 15,
@@ -303,7 +303,7 @@ Invoke-RestMethod -Uri http://localhost:7071/api/repo/octocat/Hello-World/master
 ### Test 3: Neo4j Browser
 
 1. Abrir: http://localhost:7474
-2. Login: `neo4j` / `codeintel123`
+2. Login: `neo4j` / `AriadnaKnowledgeStore123`
 3. Ejecutar:
 
 ```cypher
@@ -444,7 +444,7 @@ RETURN c.name, c.namespace
 docker ps | Select-String neo4j
 
 # Si no está, iniciarlo
-docker start neo4j-codeintel
+docker start neo4j-AriadnaKnowledgeStore
 
 # Verificar conectividad
 Test-NetConnection localhost -Port 7687
@@ -463,7 +463,7 @@ Test-NetConnection localhost -Port 7687
 **Solución:**
 
 ```powershell
-cd C:\proyectos\gh-code-intel-mvp\src
+cd C:\proyectos\gh-ariadna-knowledgestore-mvp\src
 dotnet restore
 dotnet build
 ```
@@ -517,7 +517,7 @@ FOR (c:Class) ON (c.validFrom, c.validTo);
 az login
 
 # Deploy
-cd CodeIntel.Functions
+cd AriadnaKnowledgeStore.Functions
 func azure functionapp publish tu-function-app
 ```
 
@@ -528,7 +528,7 @@ func azure functionapp publish tu-function-app
 ### Ver logs de Neo4j
 
 ```powershell
-docker logs -f neo4j-codeintel
+docker logs -f neo4j-AriadnaKnowledgeStore
 ```
 
 ### Limpiar datos de prueba
@@ -542,8 +542,8 @@ DETACH DELETE n
 ### Backup de Neo4j
 
 ```powershell
-docker exec neo4j-codeintel neo4j-admin database dump neo4j --to-path=/tmp
-docker cp neo4j-codeintel:/tmp/neo4j.dump ./backup/
+docker exec neo4j-AriadnaKnowledgeStore neo4j-admin database dump neo4j --to-path=/tmp
+docker cp neo4j-AriadnaKnowledgeStore:/tmp/neo4j.dump ./backup/
 ```
 
 ### Monitorear performance
@@ -557,7 +557,7 @@ CALL dbms.listQueries()
 
 ## 🎉 ¡Listo!
 
-Ya tienes CodeIntel funcionando con Estrategia 1 (Versionado Temporal).
+Ya tienes AriadnaKnowledgeStore funcionando con Estrategia 1 (Versionado Temporal).
 
 **Características disponibles:**
 - ✅ Análisis de código C# con Roslyn
@@ -574,4 +574,4 @@ Ya tienes CodeIntel funcionando con Estrategia 1 (Versionado Temporal).
 
 ---
 
-*Generado para CodeIntel v1.0.0 - Estrategia 1 (Versionado Temporal)*
+*Generado para AriadnaKnowledgeStore v1.0.0 - Estrategia 1 (Versionado Temporal)*

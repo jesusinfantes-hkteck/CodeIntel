@@ -1,4 +1,4 @@
-# 🌐 Actualización: Neo4j AuraDB como Opción Principal
+﻿# 🌐 Actualización: Neo4j AuraDB como Opción Principal
 
 **Fecha:** 2024
 **Motivación:** El proyecto actualmente usa Neo4j AuraDB Cloud (`https://console.neo4j.io/`) pero la documentación recomendaba opciones locales (Docker/Neo4j Desktop).
@@ -47,7 +47,7 @@ Opción C: Neo4j Desktop (Local)
 
 **Antes:**
 ```powershell
-.\Initialize-Neo4j-Versioned.ps1 -Password codeintel123
+.\Initialize-Neo4j-Versioned.ps1 -Password AriadnaKnowledgeStore123
 ```
 
 **Ahora:**
@@ -59,7 +59,7 @@ Opción C: Neo4j Desktop (Local)
   -Password "tu-password-de-auradb"
 
 # Para Local:
-.\Initialize-Neo4j-Versioned.ps1 -Password codeintel123
+.\Initialize-Neo4j-Versioned.ps1 -Password AriadnaKnowledgeStore123
 ```
 
 #### Sección 5️⃣: Configurar GitHub Token
