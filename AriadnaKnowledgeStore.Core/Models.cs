@@ -2,6 +2,16 @@
 
 public record RepoRequest(string Owner, string Repo, string Branch = "main", string Path = "");
 
+/// <summary>
+/// Version context shared between graph store and vector index for consistency
+/// </summary>
+public record VersionContext(
+    string VersionId,
+    string RepoId,
+    long Timestamp,
+    string? CommitHash
+);
+
 public record CodeClass(string Id, string Name, string Namespace, string FilePath);
 public record CodeMethod(string Id, string Name, string ClassId, string FilePath, string? Body);
 

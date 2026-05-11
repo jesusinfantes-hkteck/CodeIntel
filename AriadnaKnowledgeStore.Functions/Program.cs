@@ -121,7 +121,9 @@ public sealed class IngestOrchestrator
         var graphModel = await _analyzer.AnalyzeAsync(local, ct);
         Console.WriteLine($"📊 Analyzed: {graphModel.Classes.Count} classes, {graphModel.Methods.Count} methods, {graphModel.AspxPages.Count} ASPX pages, {graphModel.AspxControls.Count} controls, {graphModel.Edges.Count} edges");
 
-        await _graph.UpsertAsync(req, graphModel, ct);
+        // Store graph and get version context
+        var versionContext = await _graph.UpsertAsync(req, graphModel, ct);
+        Console.WriteLine($"✅ Stored graph with version: {versionContext.VersionId}");
 
         await _index.EnsureIndexAsync(ct);
 
@@ -138,17 +140,23 @@ public sealed class IngestOrchestrator
 
         Console.WriteLine($"🔢 Generated {toIndex.Count} embeddings");
 
-        await _index.UpsertAsync(toIndex, ct);
+        // Index vectors with same version context
+        await _index.UpsertAsync(toIndex, versionContext, ct);
+        Console.WriteLine($"✅ Indexed {toIndex.Count} documents with version: {versionContext.VersionId}");
 
         return new
         {
             repo = $"{req.Owner}/{req.Repo}@{req.Branch}",
             downloadedTo = local,
+            versionId = versionContext.VersionId,
+            timestamp = versionContext.Timestamp,
+            commitHash = versionContext.CommitHash,
             classes = graphModel.Classes.Count,
             methods = graphModel.Methods.Count,
             aspxPages = graphModel.AspxPages.Count,
             aspxControls = graphModel.AspxControls.Count,
             aspxEvents = graphModel.AspxEvents.Count,
+            blazorComponents = graphModel.BlazorComponents.Count,
             edges = graphModel.Edges.Count,
             chunksGenerated = chunks.Count,
             indexed = toIndex.Count

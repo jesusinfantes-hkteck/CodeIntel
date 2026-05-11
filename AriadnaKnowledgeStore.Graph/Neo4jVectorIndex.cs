@@ -81,10 +81,11 @@ public class Neo4jVectorIndex : IVectorIndex, IAsyncDisposable
         }
     }
 
-    public async Task UpsertAsync(IEnumerable<VectorDocument> docs, CancellationToken ct)
+    public async Task UpsertAsync(IEnumerable<VectorDocument> docs, VersionContext version, CancellationToken ct)
     {
         var docList = docs.ToList();
-        _logger.LogInformation("Upserting {Count} vector documents to Neo4j", docList.Count);
+        _logger.LogInformation("Upserting {Count} versioned vector documents for version {VersionId}", 
+            docList.Count, version.VersionId);
 
         await using var session = _driver.AsyncSession();
 
@@ -96,20 +97,51 @@ public class Neo4jVectorIndex : IVectorIndex, IAsyncDisposable
                 {
                     ct.ThrowIfCancellationRequested();
 
-                    // Create or update CodeNode with embedding
+                    // Cerrar versiones anteriores (soft delete)
                     await tx.RunAsync(@"
-                        MERGE (n:CodeNode {id: $id})
-                        SET n.content = $content,
-                            n.embedding = $embedding,
-                            n.type = $type,
-                            n.className = $className,
-                            n.filePath = $filePath,
-                            n.lastUpdated = datetime()
+                        MATCH (prev:CodeNode {id: $id, repoId: $repoId})
+                        WHERE prev.validTo IS NULL
+                        SET prev.validTo = $timestamp
+                    ",
+                    new 
+                    { 
+                        id = doc.Id, 
+                        repoId = version.RepoId, 
+                        timestamp = version.Timestamp 
+                    });
 
-                        // Link to corresponding Class or Method node if they exist
+                    // Crear nueva versión del CodeNode
+                    await tx.RunAsync(@"
+                        CREATE (n:CodeNode {
+                            id: $id,
+                            versionId: $versionId,
+                            repoId: $repoId,
+                            validFrom: $timestamp,
+                            validTo: null,
+                            content: $content,
+                            embedding: $embedding,
+                            type: $type,
+                            className: $className,
+                            filePath: $filePath
+                        })
+
                         WITH n
-                        OPTIONAL MATCH (entity {id: $id})
-                        WHERE entity:Class OR entity:Method
+                        MATCH (v:Version {id: $versionId})
+                        MERGE (v)-[:CONTAINS]->(n)
+
+                        // Enlazar versiones (historial)
+                        WITH n
+                        OPTIONAL MATCH (prev:CodeNode {id: $id, repoId: $repoId})
+                        WHERE prev.validTo = $timestamp 
+                          AND prev.versionId <> $versionId
+                        FOREACH (_ IN CASE WHEN prev IS NOT NULL THEN [1] ELSE [] END |
+                            MERGE (prev)-[:NEXT_VERSION]->(n)
+                        )
+
+                        // Link to entity node (if exists with same version)
+                        WITH n
+                        OPTIONAL MATCH (entity {id: $id, versionId: $versionId})
+                        WHERE entity:Class OR entity:Method OR entity:BlazorComponent
                         FOREACH (_ IN CASE WHEN entity IS NOT NULL THEN [1] ELSE [] END |
                             MERGE (n)-[:REPRESENTS]->(entity)
                         )
@@ -117,6 +149,9 @@ public class Neo4jVectorIndex : IVectorIndex, IAsyncDisposable
                     new
                     {
                         id = doc.Id,
+                        versionId = version.VersionId,
+                        repoId = version.RepoId,
+                        timestamp = version.Timestamp,
                         content = doc.Content,
                         embedding = doc.Embedding.ToArray(),
                         type = doc.Type,
@@ -126,21 +161,30 @@ public class Neo4jVectorIndex : IVectorIndex, IAsyncDisposable
                 }
             });
 
-            _logger.LogInformation("Successfully upserted {Count} vector documents", docList.Count);
+            _logger.LogInformation("Successfully upserted {Count} versioned vector documents", docList.Count);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to upsert vector documents");
+            _logger.LogError(ex, "Failed to upsert versioned vector documents");
             throw;
         }
     }
 
     /// <summary>
-    /// Search for similar code using vector similarity
+    /// Search for similar code using vector similarity (returns current version by default)
     /// </summary>
     public async Task<List<VectorSearchResult>> SearchAsync(float[] queryEmbedding, int topK = 10, CancellationToken ct = default)
     {
-        _logger.LogInformation("Searching for top {TopK} similar code nodes", topK);
+        return await SearchAsync(queryEmbedding, topK, timestamp: null, ct);
+    }
+
+    /// <summary>
+    /// Search for similar code using vector similarity with optional timestamp filter
+    /// </summary>
+    public async Task<List<VectorSearchResult>> SearchAsync(float[] queryEmbedding, int topK = 10, long? timestamp = null, CancellationToken ct = default)
+    {
+        var mode = timestamp.HasValue ? $"historical (timestamp: {timestamp})" : "current";
+        _logger.LogInformation("Searching for top {TopK} similar code nodes ({Mode})", topK, mode);
 
         await using var session = _driver.AsyncSession();
 
@@ -148,21 +192,39 @@ public class Neo4jVectorIndex : IVectorIndex, IAsyncDisposable
         {
             var results = await session.ExecuteReadAsync(async tx =>
             {
-                var result = await tx.RunAsync($@"
-                    CALL db.index.vector.queryNodes($indexName, $topK, $queryVector)
-                    YIELD node, score
-                    RETURN node.id as id,
-                           node.content as content,
-                           node.type as type,
-                           node.className as className,
-                           node.filePath as filePath,
-                           score
-                    ORDER BY score DESC
-                ", new
+                var query = timestamp.HasValue
+                    ? @"
+                        CALL db.index.vector.queryNodes($indexName, $topK, $queryVector)
+                        YIELD node, score
+                        WHERE node.validFrom <= $timestamp 
+                          AND (node.validTo IS NULL OR node.validTo > $timestamp)
+                        RETURN node.id as id,
+                               node.content as content,
+                               node.type as type,
+                               node.className as className,
+                               node.filePath as filePath,
+                               score
+                        ORDER BY score DESC
+                      "
+                    : @"
+                        CALL db.index.vector.queryNodes($indexName, $topK, $queryVector)
+                        YIELD node, score
+                        WHERE node.validTo IS NULL
+                        RETURN node.id as id,
+                               node.content as content,
+                               node.type as type,
+                               node.className as className,
+                               node.filePath as filePath,
+                               score
+                        ORDER BY score DESC
+                      ";
+
+                var result = await tx.RunAsync(query, new
                 {
                     indexName = VectorIndexName,
                     topK,
-                    queryVector = queryEmbedding
+                    queryVector = queryEmbedding,
+                    timestamp
                 });
 
                 var searchResults = new List<VectorSearchResult>();

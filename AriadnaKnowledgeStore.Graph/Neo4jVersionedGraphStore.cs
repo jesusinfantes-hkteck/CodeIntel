@@ -25,7 +25,7 @@ public class Neo4jVersionedGraphStore : IVersionedGraphStore, IAsyncDisposable
         _logger = logger;
     }
 
-    public async Task UpsertAsync(RepoRequest req, GraphModel model, CancellationToken ct)
+    public async Task<VersionContext> UpsertAsync(RepoRequest req, GraphModel model, CancellationToken ct)
     {
         var repoId = $"{req.Owner}/{req.Repo}@{req.Branch}";
         var versionId = Guid.NewGuid().ToString(); // ID único para esta versión
@@ -547,6 +547,9 @@ public class Neo4jVersionedGraphStore : IVersionedGraphStore, IAsyncDisposable
                 _logger.LogInformation("Successfully stored versioned graph for {RepoId} - Version: {VersionId}", 
                     repoId, versionId);
             });
+
+            // Return version context for vector indexing
+            return new VersionContext(versionId, repoId, timestamp.ToUnixTimeSeconds(), commitHash);
         }
         catch (Exception ex)
         {

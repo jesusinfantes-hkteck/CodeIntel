@@ -12,10 +12,19 @@ public class MockGraphStore : IGraphStore
         _logger = logger;
     }
 
-    public async Task UpsertAsync(RepoRequest req, GraphModel model, CancellationToken ct)
+    public async Task<VersionContext> UpsertAsync(RepoRequest req, GraphModel model, CancellationToken ct)
     {
-        _logger.LogInformation("[MOCK] Storing graph: {ClassCount} classes, {MethodCount} methods", 
-            model.Classes.Count, model.Methods.Count);
+        var versionContext = new VersionContext(
+            VersionId: Guid.NewGuid().ToString(),
+            RepoId: $"{req.Owner}/{req.Repo}@{req.Branch}",
+            Timestamp: DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            CommitHash: req.Path
+        );
+
+        _logger.LogInformation("[MOCK] Storing graph: {ClassCount} classes, {MethodCount} methods, Version: {VersionId}", 
+            model.Classes.Count, model.Methods.Count, versionContext.VersionId);
         await Task.Delay(100, ct);
+
+        return versionContext;
     }
 }

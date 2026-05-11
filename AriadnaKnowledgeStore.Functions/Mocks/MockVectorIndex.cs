@@ -19,11 +19,11 @@ public class MockVectorIndex : IVectorIndex
         await Task.Delay(50, ct);
     }
 
-    public async Task UpsertAsync(IEnumerable<VectorDocument> docs, CancellationToken ct)
+    public async Task UpsertAsync(IEnumerable<VectorDocument> docs, VersionContext version, CancellationToken ct)
     {
         _docs.AddRange(docs);
-        _logger.LogInformation("[MOCK] Indexed {DocumentCount} documents (total: {TotalCount})", 
-            docs.Count(), _docs.Count);
+        _logger.LogInformation("[MOCK] Indexed {DocumentCount} documents for version {VersionId} (total: {TotalCount})", 
+            docs.Count(), version.VersionId, _docs.Count);
         await Task.Delay(100, ct);
     }
 }

@@ -12,7 +12,10 @@ public interface ICodeAnalyzer
 
 public interface IGraphStore
 {
-    Task UpsertAsync(RepoRequest req, GraphModel model, CancellationToken ct);
+    /// <summary>
+    /// Upsert graph model and return version info for vector indexing
+    /// </summary>
+    Task<VersionContext> UpsertAsync(RepoRequest req, GraphModel model, CancellationToken ct);
 }
 
 /// <summary>
@@ -44,5 +47,9 @@ public interface IEmbeddingService
 public interface IVectorIndex
 {
     Task EnsureIndexAsync(CancellationToken ct);
-    Task UpsertAsync(IEnumerable<VectorDocument> docs, CancellationToken ct);
+
+    /// <summary>
+    /// Upsert vector documents with versioning support
+    /// </summary>
+    Task UpsertAsync(IEnumerable<VectorDocument> docs, VersionContext version, CancellationToken ct);
 }
